@@ -30,10 +30,10 @@ export default function Hero() {
               <PrimaryButton className="w-full lg:w-auto mb-2 lg:mb-0">
                 Get Started
               </PrimaryButton>
-              <SecondaryButton className="w-full lg:w-auto">
+              {/* <SecondaryButton className="w-full lg:w-auto">
                 Download App
                 <BsChevronDown className="ml-2 inline" />
-              </SecondaryButton>
+              </SecondaryButton> */}
             </div>
           </div>
         </div>

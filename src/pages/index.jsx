@@ -19,7 +19,7 @@ export default function index() {
       <CryptocurrencySection />
       <BuyAndTradeSection />
       <PartnerSection />
-      <CreditCardSection />
+      {/* <CreditCardSection />/ */}
       <TradingToolsSection />
       <SecuritySection />
       <GetStarted />

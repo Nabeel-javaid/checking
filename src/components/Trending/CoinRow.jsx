@@ -14,10 +14,10 @@ export default function CoinRow({ image, coinName, coinPrice, coinUpTrend }) {
         {coinName}
       </div>
       <div className="flex items-center">
-        {coinUpTrend ? (
-          <span className="text-green mr-1">+</span>
+        {coinUpTrend ? (  
+          <span className="text-green mr-1"> </span>
         ) : (
-          <span className="text-red mr-1">-</span>
+          <span className="text-red mr-1"> </span>
         )}
         {coinPrice}
       </div>

@@ -1,102 +1,105 @@
-import React from "react";
-import emoji from "react-easy-emoji";
+import React, { useEffect, useState } from "react";
 import ListCoin from "../components/ListCoin";
+import Trending from "../components/Trending";
 
-const trendingCoins = [
-  {
-    image: "/cryptocurrencies/bitcoin.png",
-    name: "Bitcoin",
-    price: "$43,180.13",
-    uptrend: true,
-  },
-  {
-    image: "/cryptocurrencies/etherium.png",
-    name: "Bitcoin",
-    price: "$3,480.65",
-    uptrend: false,
-  },
-  {
-    image: "/cryptocurrencies/solana.png",
-    name: "Bitcoin",
-    price: "$150,20",
-    uptrend: true,
-  },
-  {
-    image: "/cryptocurrencies/doge.png",
-    name: "Bitcoin",
-    price: "$0,1572",
-    uptrend: true,
-  },
-];
-const gainerCoins = [
-  {
-    image: "/cryptocurrencies/pappay.png",
-    name: "PAPPAY",
-    price: "$0.00374",
-    uptrend: true,
-  },
-  {
-    image: "/cryptocurrencies/bitcoinasia.png",
-    name: "Bitcoin Asia",
-    price: "$0.02096",
-    uptrend: true,
-  },
-  {
-    image: "/cryptocurrencies/moonrock.png",
-    name: "Moon Rock",
-    price: "$0.004907",
-    uptrend: true,
-  },
-  {
-    image: "/cryptocurrencies/ninjafloki.png",
-    name: "Ninja Floki",
-    price: "$0.000123",
-    uptrend: true,
-  },
-];
-const recentlyCoins = [
-  {
-    image: "/cryptocurrencies/metacraft.png",
-    name: "Metacraft",
-    price: "$0.0608",
-    uptrend: false,
-  },
-  {
-    image: "/cryptocurrencies/frog.png",
-    name: "Frog",
-    price: "$0.5875",
-    uptrend: false,
-  },
-  {
-    image: "/cryptocurrencies/muskdoge.png",
-    name: "Musk Doge",
-    price: "$0.04041",
-    uptrend: true,
-  },
-  {
-    image: "/cryptocurrencies/2share.png",
-    name: "2 Share",
-    price: "$1,366.24",
-    uptrend: true,
-  },
-];
+import { supabase } from "../utils/supabase";
+
 
 export default function Cryptocurrency() {
+
+  const [markets, setMarkets] = useState([]);
+  const [recen , setRecen] = useState([]);
+  const [bids, setBids] = useState([]);
+
+  useEffect(() => {
+    const fetchMarkets = async () => {
+      let { data, error } = await supabase
+        .from('Markets')
+        .select('*')
+        .order('count', { ascending: false })
+        .limit(4);  // Limits the result to the top 5 items
+  
+      if (error) console.log('Error fetching markets:', error);
+      else setMarkets(data);
+    };
+  
+    fetchMarkets();
+  }, []);
+
+  useEffect(() => {
+    const fetchRecen = async () => {
+      let { data, error } = await supabase
+        .from('LoanBid')
+        .select('*')
+        .limit(4);  // Limits the result to the top 5 items
+  
+      if (error) console.log('Error fetching markets:', error);
+      else setRecen(data);
+    };
+  
+    fetchRecen();
+  }
+  , []);
+
+ 
+  useEffect(() => {
+    const fetchBids = async () => {
+      let { data, error } = await supabase
+        .from('LoanBid')
+        .select('*')
+        .order('CollateralAmount', { ascending: false })
+        .limit(4);  // Limits the result to the top 4 items
+  
+      if (error) console.log('Error fetching markets:', error);
+      else setBids(data);
+    };
+  
+    fetchBids();
+  }
+  , []);
+
+
+  const recentlyCoins = recen.map((coin, index) => ({
+    image: `/cryptocurrencies/${(index % 4) +11}.png`, // Cycles through images 1 to 4
+    name: coin.BorrowerAddress.slice(0, 10), // Shows only the first 20 digits of BorrowerAddress
+    price: coin.CollateralAmount, // Using CollateralAmount as the price
+    uptrend: true, // Setting uptrend as true for all coins; adjust if necessary
+  }));
+  
+
+
+  const trendingCoins = markets.map((coin, index) => ({
+    image: `/cryptocurrencies/${(index % 4) + 1}.png`, // Cycles through images 1 to 4
+    name: coin.name,
+    price: coin.count, // Assuming 'count' is the price
+    uptrend: true, // Setting uptrend as true for all coins; adjust if necessary
+  }));
+  
+  
+
+  const gainerCoins = bids.map((coin, index) => ({
+    image: `/cryptocurrencies/${(index % 4) + 21}.png`, // Cycles through images 1 to 4
+    name: coin.BorrowerAddress.slice(0, 10),// Shows only the first 20 digits of BorrowerAddress
+    price: coin.CollateralAmount, // Using CollateralAmount as the price
+    uptrend: true, // Setting uptrend as true for all coins; adjust if necessary
+  }));
+
+
   return (
     <section className="relative md:-mt-10">
       <div className="container mx-auto rounded-3xl bg-white py-8 px-4 shadow mb-8">
         <div className="grid md:grid-cols-2 xl:grid-cols-3">
           <div className="px-4 mb-6 lg:mb-0">
-            <ListCoin title="🔥 Trending" data={trendingCoins} more="/" />
+            <Trending title="🔥 Trending Markets" data={trendingCoins} />
           </div>
           <div className="px-4 mb-6 lg:mb-0">
-            <ListCoin title="🚀 Top Gainers" data={gainerCoins} more="/" />
+            <ListCoin title="🚀 Top Bids" data={gainerCoins}  />
           </div>
           <div className="px-4 mb-6 lg:mb-0">
-            <ListCoin title="💎 Recently Added" data={recentlyCoins} more="/" />
+            <ListCoin title="💎 Recently Bid" data={recentlyCoins}  />
           </div>
         </div>
-      </div>
+      </div>  
     </section>
   );
 }

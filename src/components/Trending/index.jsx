@@ -1,6 +1,5 @@
 import React from "react";
 import emoji from "react-easy-emoji";
-import { FiChevronRight } from "react-icons/fi";
 
 import CoinRow from "./CoinRow";
 
@@ -14,7 +13,7 @@ export default function ListCoin({ title, more, data }) {
       <div>
         <div className="grid grid-cols-3 text-sm my-4">
           <span className="text-gray">Name</span>
-          <span className="text-gray">Price</span>
+          <span className="text-gray">Count</span>
           <span className="text-gray">Chart</span>
         </div>
         {data?.map(({ image, name, price, uptrend }, i) => (
