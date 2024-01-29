@@ -1,7 +1,7 @@
 import React from "react";
 import SecondaryButton from "../components/buttons/SecondaryButton";
 import tradingTools from "../images/illustrations/tradingtools.png";
-import { Fade } from "react-reveal";
+import { Fade } from "react-awesome-reveal";
 
 export default function TradingTools() {
   return (

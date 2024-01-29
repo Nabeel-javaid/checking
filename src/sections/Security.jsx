@@ -1,7 +1,7 @@
 import React from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import banks from "../images/illustrations/banks.png";
-import { Fade } from "react-reveal";
+import { Fade } from "react-awesome-reveal";
 
 export default function Security() {
   return (

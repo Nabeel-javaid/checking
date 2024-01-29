@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import classNames from "classnames";
-import ClickOutComponent from "react-onclickout";
+import ClickOutComponent from "react-onclickoutside";
 
 export default function Select({ onChange, value = "BTC" }) {
   const data = [

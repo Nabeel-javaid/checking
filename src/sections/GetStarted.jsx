@@ -3,7 +3,7 @@ import signupImage from "../images/illustrations/signup.png";
 import walletImage from "../images/illustrations/wallet.png";
 import okayImage from "../images/illustrations/okay.png";
 import arrow from "../images/arrow.svg";
-import { Fade } from "react-reveal";
+import { Fade } from "react-awesome-reveal";
 
 export default function GetStarted() {
   return (

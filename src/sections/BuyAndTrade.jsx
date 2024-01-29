@@ -2,7 +2,7 @@ import React from "react";
 import PrimaryButton from "../components/buttons/PrimaryButton";
 import BuyIcon from "../images/illustrations/buy.png";
 import Select from "../Select";
-import { Fade } from "react-reveal";
+import { Fade } from "react-awesome-reveal";
 
 export default function BuyAndTrade() {
   const formHandler = (e) => {

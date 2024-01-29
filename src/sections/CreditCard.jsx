@@ -1,7 +1,7 @@
 import React from "react";
 import SecondaryButton from "../components/buttons/SecondaryButton";
 import creditCard from "../images/illustrations/credit-card.png";
-import { Fade } from "react-reveal";
+import { Fade } from "react-awesome-reveal";
 import { BsCheckCircleFill } from "react-icons/bs";
 
 export default function CreditCard() {

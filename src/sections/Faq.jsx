@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React, { useState } from "react";
 import { BsChevronUp } from "react-icons/bs";
 import faq from "../images/illustrations/faq.png";
-import { Fade } from "react-reveal";
+import { Fade } from "react-awesome-reveal";
 
 const FaqItem = ({ open, title, children }) => {
   const [isOpen, setIsOpen] = useState(open ? true : false);

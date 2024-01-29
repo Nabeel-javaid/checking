@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
-import ClickOutComponent from "react-onclickout";
+import ClickOutComponent from "react-onclickoutside";
 
 export default function Dropdown({ children }) {
   const [open, setOpen] = useState(false);
