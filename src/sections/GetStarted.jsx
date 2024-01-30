@@ -1,7 +1,7 @@
 import React from "react";
-import signupImage from "../images/illustrations/signup.png";
-import walletImage from "../images/illustrations/wallet.png";
-import okayImage from "../images/illustrations/okay.png";
+import createMarketImage from "../images/illustrations/signup.png"; // Image showing market creation
+import customizeMarketImage from "../images/illustrations/wallet.png"; // Image showing market customization
+import participateMarketImage from "../images/illustrations/okay.png"; // Image showing participation in a market
 import arrow from "../images/arrow.svg";
 import { Fade } from "react-awesome-reveal";
 
@@ -12,16 +12,16 @@ export default function GetStarted() {
         <div className="container mx-auto ">
           <div className="py-6">
             <h1 className="text-center text-2xl font-bold leading-normal">
-              Get started in juts a few minutes
+              Get Started in Just a Few Minutes
             </h1>
           </div>
-          <div className="flex flex-col md:flex-row justify-center gap:20">
+          <div className="flex flex-col md:flex-row justify-center gap-20">
             <Fade up>
               <div className="text-center relative px-4">
                 <div className="relative">
                   <img
-                    src={signupImage}
-                    alt="signupImage"
+                    src={createMarketImage}
+                    alt="Create Market"
                     className="mb-4 mx-auto"
                   />
                   <img
@@ -30,10 +30,9 @@ export default function GetStarted() {
                     className="hidden md:block absolute top-1/2 -right-32"
                   />
                 </div>
-                <h3 className="text-lg font-bold">Sign Up</h3>
+                <h3 className="text-lg font-bold">Create Your Market</h3>
                 <p className="text-gray">
-                  Buy Bitcoin or Ethereum, then securely store it in your Wallet
-                  or send it on easily to friends
+                  Set up your own lending and borrowing market with customized terms like APR, liquidation time, and coin options.
                 </p>
               </div>
             </Fade>
@@ -41,8 +40,8 @@ export default function GetStarted() {
               <div className="text-center relative px-4">
                 <div className="relative">
                   <img
-                    src={walletImage}
-                    alt="signupImage"
+                    src={customizeMarketImage}
+                    alt="Customize Market"
                     className="mb-4 mx-auto"
                   />
                   <img
@@ -51,10 +50,9 @@ export default function GetStarted() {
                     className="hidden md:block absolute top-1/2 -right-32"
                   />
                 </div>
-                <h3 className="text-lg font-bold">Fund</h3>
+                <h3 className="text-lg font-bold">Customize Terms</h3>
                 <p className="text-gray">
-                  Choose your preferred payment method such as bank transfer or
-                  credit card to top up your NEFA Wallet
+                  Tailor the conditions of your market to suit your financial strategy and risk preferences.
                 </p>
               </div>
             </Fade>
@@ -62,15 +60,14 @@ export default function GetStarted() {
               <div className="text-center relative px-4">
                 <div className="relative">
                   <img
-                    src={okayImage}
-                    alt="signupImage"
+                    src={participateMarketImage}
+                    alt="Participate in Market"
                     className="mb-4 mx-auto"
                   />
                 </div>
-                <h3 className="text-lg font-bold">Buy Crypto</h3>
+                <h3 className="text-lg font-bold">Borrow or Lend</h3>
                 <p className="text-gray">
-                  Sign up for your free NEFA Wallet on web, iOS or Android and
-                  follow our easy process to set up your profile
+                  Join an existing market as a borrower or lender and engage in transactions under agreed-upon terms.
                 </p>
               </div>
             </Fade>

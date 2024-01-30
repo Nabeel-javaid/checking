@@ -13,39 +13,37 @@ export default function TradingTools() {
               <div className="max-w-md space-y-4">
                 <h1 className="text-2xl font-bold leading-normal">
                   Advanced Trading{" "}
-                  <span className="text-blue-gradient">Tools</span>
+                  <span className="text-blue-gradient">Platform</span>
                 </h1>
                 <div className="space-y-2">
                   <h3 className="font-bold">
                     Professional Access, Non-stop Availability
                   </h3>
                   <p className="text-gray">
-                    We provide premium access to crypto trading for both
-                    individuals and institutions through high liquidity,
-                    reliable order execution and constant uptime.
+                    We provide premium access to crypto lending and Borrowing for both
+                    individuals and institutions through reliable Bid execution and constant uptime.
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="font-bold">A Range of Powerful Apis</h3>
+                  <h3 className="font-bold">A Range of Powerful Tools</h3>
                   <p className="text-gray">
-                    Set up your own trading interface or deploy your algorithmic
-                    strategy with our high-performance FIX and HTTP APIs.
-                    Connect to our WebSocket for real-time data streaming.
+                    Set up your own trading condition or deploy your own
+                    Market with our high-performing Dapp.
                   </p>
                 </div>
                 <div className="space-y-2">
                   <h3 className="font-bold">Customer Support</h3>
                   <p className="text-gray">
                     Premium 24/7 support available to all customers worldwide by
-                    phone or email. Dedicated account managers for partners.
+                    email. Dedicated account managers for partners.
                   </p>
                 </div>
                 <div className="flex">
                   <SecondaryButton>Get Started</SecondaryButton>
                   <a href="#">
-                    <button className="py-4 px-10 text-primary underline">
+                    {/* <button className="py-4 px-10 text-primary underline">
                       Learn more
-                    </button>
+                    </button> */}
                   </a>
                 </div>
               </div>
