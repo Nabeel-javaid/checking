@@ -19,13 +19,13 @@ export default function BuyAndTrade() {
         <div className="flex items-center">
           <div className="max-w-xl space-y-5">
             <h1 className="text-3xl font-bold leading-normal">
-              Buy & trade on the <br /> original crypto exchange.
+              Lend & Borrow on our <br />Innovative Blockchain Platform.
             </h1>
             <p className="text-gray">
-              Buy now and get 40% extra bonus Minimum pre-sale amount <br />
-              25 Crypto Coin. We accept BTC crypto-currency
+            Launch your market with us and get your gas fees back! Start your decentralized finance journey with minimal almost zero as initial costs.
+
             </p>
-            <form onSubmit={formHandler}>
+            {/* <form onSubmit={formHandler}>
               <div className="flex justify-between gap-4 md:gap-6 mb-6">
                 <div className="border border-primary rounded-2xl py-3 md:py-4 px-4 md:px-6 flex items-center">
                   <div className="border-r border-primary pr-4 md:pr-6">
@@ -55,8 +55,8 @@ export default function BuyAndTrade() {
                 </div>
                 <Select value="BTC" />
               </div>
-            </form>
-            <PrimaryButton className="w-full">Buy Now</PrimaryButton>
+            </form> */}
+            <PrimaryButton className="w-50">Open Market</PrimaryButton>
           </div>
         </div>
         <div className="row-start-1 md:col-start-2">

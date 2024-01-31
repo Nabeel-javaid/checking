@@ -20,7 +20,7 @@ export default function TradingTools() {
                     Professional Access, Non-stop Availability
                   </h3>
                   <p className="text-gray">
-                    We provide premium access to crypto lending and Borrowing for both
+                    We provide access to crypto lending and Borrowing for both
                     individuals and institutions through reliable Bid execution and constant uptime.
                   </p>
                 </div>

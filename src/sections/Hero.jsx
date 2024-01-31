@@ -1,10 +1,6 @@
 import React from "react";
-import SecondaryButton from "../components/buttons/SecondaryButton";
 import globeImage from "../images/illustrations/globe.png";
 import PrimaryButton from "../components/buttons/PrimaryButton";
-import { BsChevronDown } from "react-icons/bs";
-import BlueCircleParticle from "../images/particles/circle1.svg";
-import OrangeCircleParticle from "../images/particles/circle2.svg";
 
 export default function Hero() {
   return (
@@ -16,24 +12,20 @@ export default function Hero() {
           <div className="space-y-4">
             <p className="text-primary">SIGN UP TODAY</p>
             <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold max-w-xl leading-normal my-4">
-              <span className="break-words">The World's </span>
+              <span className="break-words">Say </span>
               <span className="break-words text-blue-gradient">
-                Fastest Growing{" "}
+                GoodBye{" "}
               </span>
-              <span>Cycrpto Web App</span>
+              <span>To Idle Money</span>
             </h1>
             <p className=" text-gray max-w-lg">
-              Buy and sell 200+ cryptocurrencies with 20+ flat currencies using
-              bank transfers or your credit/debit card.
+              Invest your spare change in CryptoCurrency and save with
+              Lend to earn passive income.
             </p>
             <div className="col-span-2 lg:flex gap-4 lg:mb-12">
               <PrimaryButton className="w-full lg:w-auto mb-2 lg:mb-0">
                 Get Started
               </PrimaryButton>
-              {/* <SecondaryButton className="w-full lg:w-auto">
-                Download App
-                <BsChevronDown className="ml-2 inline" />
-              </SecondaryButton> */}
             </div>
           </div>
         </div>
