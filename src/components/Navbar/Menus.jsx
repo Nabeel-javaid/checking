@@ -6,38 +6,28 @@ export default function Menus() {
     <>
       <div className="w-full">
         <a href="/" className="hover:text-primary py-2 block">
-          Cryptocurrency
+          Home
         </a>
       </div>
       <div className="w-full">
         <a href="/" className="hover:text-primary py-2 block">
-          Exchanges
+          About Us
         </a>
       </div>
       <div className="w-full">
         <a href="/" className="hover:text-primary py-2 block">
-          Watchlist
-        </a>
-      </div>
-      <div className="w-full">
-        <a href="/" className="hover:text-primary py-2 block">
-          NFT
-        </a>
-      </div>
-      <div className="w-full">
-        <a href="/" className="hover:text-primary py-2 block">
-          Portofolios
+          Market
         </a>
       </div>
       <Dropdown>
         <div className="w-full">
           <a href="/" className="hover:text-primary py-2 block">
-            Portofolios
+            Create Market
           </a>
         </div>
         <div className="w-full">
           <a href="/" className="hover:text-primary py-2 block">
-            Portofoliosx
+            View Markets
           </a>
         </div>
       </Dropdown>

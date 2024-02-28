@@ -1,5 +1,6 @@
 import React from "react";
-import Index from "./pages";
+// import Index from "./pages";
+import Index from "./createMarket"
 // import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 

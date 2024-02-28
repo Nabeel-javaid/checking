@@ -16,7 +16,7 @@ export default function Dropdown({ children }) {
         className="hover:text-primary py-2 cursor-pointer flex items-center justify-between"
         onClick={() => setOpen(!open)}
       >
-        Product
+        Market
         <BsChevronDown className="inline ml-2" />
       </span>
       <ClickOutComponent onClickOut={() => open && setOpen(false)}>

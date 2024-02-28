@@ -88,6 +88,9 @@ export default function Navbar() {
             </div>
           </div>
 
+
+          
+
           <div className="hidden gap-4 md:flex">
             <ConnectWallet
               theme={"dark"}
@@ -124,7 +127,7 @@ export default function Navbar() {
                     />
                   </div>
                   <div className="mb-4">
-                    <Menus />
+                    <Menus /> 
                   </div>
                 </div>
               </div>
