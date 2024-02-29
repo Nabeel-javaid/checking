@@ -80,10 +80,10 @@ export default function Navbar() {
           { "bg-white shadow-lg !py-3": backgroundWhite }
         )}
       >
-        <div className="px-4 container mx-auto top-0 flex justify-between items-center">
+        <div className="container top-0 flex items-center justify-between px-4 mx-auto">
           <div className="flex items-center">
             <img src={Logo} className="mr-6" alt="Neva" />
-            <div className="hidden mx-4 gap-8 xl:flex">
+            <div className="hidden gap-8 mx-4 xl:flex">
               <Menus />
             </div>
           </div>
@@ -99,9 +99,9 @@ export default function Navbar() {
             />
           </div>
 
-          <div className="md:hidden text-2xl">
+          <div className="text-2xl md:hidden">
             <button
-              className="z-50 p-4 block transition-all"
+              className="z-50 block p-4 transition-all"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
               {dropdownOpen ? <BsX /> : <BsList />}
@@ -115,11 +115,11 @@ export default function Navbar() {
               })}
             >
               <div
-                className="h-screen left-0 bg-black bg-opacity-30"
+                className="left-0 h-screen bg-black bg-opacity-30"
                 onClick={handleWindowScroll}
               >
-                <div className="z-20 shadow-xl bg-white p-6">
-                  <div className="gap-4 flex mb-6">
+                <div className="z-20 p-6 bg-white shadow-xl">
+                  <div className="flex gap-4 mb-6">
                     <ConnectWallet
                       theme={"black"}
                       switchToActiveChain={true}

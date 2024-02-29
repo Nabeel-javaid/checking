@@ -1,13 +1,22 @@
 import React from "react";
-// import Index from "./pages";
-import Index from "./createMarket"
+import Home from "./pages";
+import CreateMarket from "./createMarket"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 
 function App() {
   // <ThirdwebProvider activeChain="ethereum" clientId="a3aade80daf0ec081979b0bb1ddf3f1cnpm run ">
-
-    return <Index />;
+    return (
+      <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/create-market" element={<CreateMarket />} />
+        </Routes>
+      </BrowserRouter>
+      </div>
+    )
   {/* </ThirdwebProvider> */}
 
 }
