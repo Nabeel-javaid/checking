@@ -122,6 +122,13 @@ const UserProfile = () => {
     fetchData();
   }, [supabase, walletAddress]);
 
+  useEffect(() => {
+    // Set the background color when the component mounts
+    document.body.style.backgroundColor = 'rgba(246,249,255,1)';
+
+  }, []);
+
+
   async function checkENS(walletAddressToCheck) {
     try {
       const config = {
