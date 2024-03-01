@@ -1,6 +1,7 @@
 import React from "react";
 import Home from "./pages";
 import CreateMarket from "./createMarket"
+import Profile from "./Profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import { ThirdwebProvider } from "@thirdweb-dev/react";
 
@@ -13,6 +14,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create-market" element={<CreateMarket />} />
+          <Route path="/profile" element={<Profile />} />
+          
         </Routes>
       </BrowserRouter>
       </div>
