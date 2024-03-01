@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import contractABI from "../../ABIs/marketRegistery.json";
 
 
-// import '../css/main.css';
+import '../../styles/main.css';
 import { useEffect } from 'react';
 
 function FeatureBox({ delay, title, description, ownerAddress, marketID, onClick }) {
