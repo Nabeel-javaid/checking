@@ -59,33 +59,34 @@ export default function Menus() {
         </a>
       </div>
       <div className="w-full">
-        <a href="/about-us" className="block py-2 hover:text-primary">
-          About Us
+        <a href="/" className="block py-2 hover:text-primary">
+          About&nbsp;Us
         </a>
       </div>
-
-      <div className="w-full">
-        <a href="/about-us" className="block py-2 hover:text-primary">
-          View Markets
-        </a>
-      </div>
-
-      <Dropdown>
-        <div className="flex flex-col">
-          <a href="/create-market" className="block py-2 hover:text-primary">
-            Create Market
+      <div>
+        {/* <div className="w-full">
+          <a href="/" className="block py-2 hover:text-primary">
+            Market
           </a>
-          {/* <a href="/view-markets" className="block py-2 hover:text-primary">
-            View Markets
-          </a> */}
-        </div>
-      </Dropdown>
-
-      <div className="w-full">
-        <a href="/profile" className="block py-2 hover:text-primary">
-          Profile
-        </a>
+        </div> */}
+        <Dropdown title="Market"> {/* Pass title as a prop to Dropdown */}
+          <div className="w-full">
+            <a href="/create-market" className="block py-2 hover:text-primary">
+              Create&nbsp;Market
+            </a>
+          </div>
+          <div className="w-full">
+            <a href="/" className="block py-2 hover:text-primary">
+              View&nbsp;Markets
+            </a>
+          </div>
+        </Dropdown>
       </div>
+      {/* <div className="w-full">
+        <a href="/" className="block py-2 hover:text-primary">
+          Contact&nbsp;Us
+        </a>
+      </div> */}
     </>
   );
 }

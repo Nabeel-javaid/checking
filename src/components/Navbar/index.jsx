@@ -81,11 +81,12 @@ export default function Navbar() {
         )}
       >
         <div className="container top-0 flex items-center justify-between px-4 mx-auto">
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <img src={Logo} className="mr-6" alt="Neva" />
-            <div className="hidden gap-8 mx-4 xl:flex">
-              <Menus />
-            </div>
+          </div>
+
+          <div className="hidden gap-16 lg:flex">
+            <Menus />
           </div>
 
 
