@@ -618,7 +618,7 @@ const CreateMarket = () => {
                 <Grid item xs={12} md={6}>
                     <img
                         src="https://i.ibb.co/QpRz6Wf/teller-v2-Step3-0c1ebb64.jpg" alt="teller-v2-Step3-0c1ebb64" border="0"
-                        style={{ width: "60%", marginTop: "25%" }}
+                        style={{ width: "60%", marginTop: "25%", mixBlendMode: "multiply"}}
                     />
 
                 </Grid>
