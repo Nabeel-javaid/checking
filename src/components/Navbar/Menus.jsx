@@ -11,26 +11,33 @@ export default function Menus() {
       </div>
       <div className="w-full">
         <a href="/" className="block py-2 hover:text-primary">
-          About Us
+          About&nbsp;Us
         </a>
       </div>
-      <div className="w-full">
-        <a href="/" className="block py-2 hover:text-primary">
-          Market
-        </a>
-      </div>
-      <Dropdown>
-        <div className="w-full">
-          <a href="/create-market" className="block py-2 hover:text-primary">
-            Create Market
-          </a>
-        </div>
-        <div className="w-full">
+      <div>
+        {/* <div className="w-full">
           <a href="/" className="block py-2 hover:text-primary">
-            View Markets
+            Market
           </a>
-        </div>
-      </Dropdown>
+        </div> */}
+        <Dropdown title="Market"> {/* Pass title as a prop to Dropdown */}
+          <div className="w-full">
+            <a href="/create-market" className="block py-2 hover:text-primary">
+              Create&nbsp;Market
+            </a>
+          </div>
+          <div className="w-full">
+            <a href="/" className="block py-2 hover:text-primary">
+              View&nbsp;Markets
+            </a>
+          </div>
+        </Dropdown>
+      </div>
+      {/* <div className="w-full">
+        <a href="/" className="block py-2 hover:text-primary">
+          Contact&nbsp;Us
+        </a>
+      </div> */}
     </>
   );
 }

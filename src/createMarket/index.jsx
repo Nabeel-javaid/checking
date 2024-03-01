@@ -233,7 +233,7 @@ const CreateMarket = () => {
                 style={{
                     minHeight: "100vh",
                     marginLeft: isMobileView ? "0" : "80px",
-                    paddingTop: "5rem",
+                    paddingTop: "7.5rem",
                     paddingBottom: "5rem",
                 }}
                 className="MarketFormContainer"

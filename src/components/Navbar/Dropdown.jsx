@@ -1,37 +1,30 @@
-import classNames from "classnames";
 import React, { useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
-import ClickOutComponent from "react-onclickoutside";
 
-export default function Dropdown({ children }) {
+export default function Dropdown({ title, children }) {
   const [open, setOpen] = useState(false);
 
+  const handleToggle = () => {
+    setOpen(!open);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <div
-      className="w-full relative group"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
+    <div className="relative group" onMouseLeave={handleClose}>
       <span
-        className="hover:text-primary py-2 cursor-pointer flex items-center justify-between"
-        onClick={() => setOpen(!open)}
+        className="flex items-center justify-between py-2 cursor-pointer hover:text-primary"
+        onClick={handleToggle}
       >
-        Market
-        <BsChevronDown className="inline ml-2" />
+        {title} <BsChevronDown className="inline ml-2" />
       </span>
-      <ClickOutComponent onClickOut={() => open && setOpen(false)}>
-        <div
-          className={classNames(
-            "lg:absolute top-full shadow-lg -left-1/2 -right-1/2 rounded-lg bg-white",
-            {
-              "opacity-100 visible h-full lg:h-auto py-4 px-6": open,
-              "opacity-0 invisible h-0": !open,
-            }
-          )}
-        >
+      {open && (
+        <div className="absolute left-0 px-6 py-4 bg-white rounded-lg shadow-lg top-full">
           {children}
         </div>
-      </ClickOutComponent>
+      )}
     </div>
   );
 }
