@@ -4,8 +4,8 @@ import { BsChevronDown } from "react-icons/bs";
 export default function Dropdown({ title, children }) {
   const [open, setOpen] = useState(false);
 
-  const handleToggle = () => {
-    setOpen(!open);
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   const handleClose = () => {
@@ -13,10 +13,9 @@ export default function Dropdown({ title, children }) {
   };
 
   return (
-    <div className="relative group" onMouseLeave={handleClose}>
+    <div className="relative group" onMouseEnter={handleOpen} onMouseLeave={handleClose}>
       <span
         className="flex items-center justify-between py-2 cursor-pointer hover:text-primary"
-        onClick={handleToggle}
       >
         {title} <BsChevronDown className="inline ml-2" />
       </span>

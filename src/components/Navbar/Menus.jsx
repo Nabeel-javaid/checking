@@ -14,6 +14,11 @@ export default function Menus() {
           About&nbsp;Us
         </a>
       </div>
+      <div className="w-full">
+        <a href="/Profile" className="block py-2 hover:text-primary">
+          Profile
+        </a>
+      </div>
       <div>
         {/* <div className="w-full">
           <a href="/" className="block py-2 hover:text-primary">
