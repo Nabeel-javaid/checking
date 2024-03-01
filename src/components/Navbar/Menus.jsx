@@ -82,7 +82,7 @@ export default function Menus() {
       </Dropdown>
 
       <div className="w-full">
-        <a href="/about-us" className="block py-2 hover:text-primary">
+        <a href="/profile" className="block py-2 hover:text-primary">
           Profile
         </a>
       </div>
