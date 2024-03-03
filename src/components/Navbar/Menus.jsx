@@ -32,7 +32,7 @@ export default function Menus() {
             </a>
           </div>
           <div className="w-full">
-            <a href="/" className="block py-2 hover:text-primary">
+            <a href="/view-market" className="block py-2 hover:text-primary">
               View&nbsp;Markets
             </a>
           </div>

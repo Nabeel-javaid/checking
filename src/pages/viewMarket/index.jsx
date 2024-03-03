@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
-import FeatureBox from '../components/viewMarket/FeatureBox';
+import Layout from '../../components/Layout';
+import FeatureBox from '../../components/viewMarket/FeatureBox';
 import { createClient } from '@supabase/supabase-js';
 import Typography from '@material-ui/core/Typography';
 import Pagination from '@mui/material/Pagination';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import Footer from '../../Footer'
 
 
 const supabaseUrl = "https://lmsbzqlwsedldqxqwzlv.supabase.co"
@@ -58,6 +59,13 @@ const ViewMarkets = () => {
     loadMarketData();
   }, [statusFilter, assetClassFilter]);
 
+
+  useEffect(() => {
+    // Set the background color when the component mounts
+    document.body.style.backgroundColor = 'rgba(246,249,255,1)';
+
+  }, []);
+
   const handleFeatureBoxClick = (marketID) => {
     const selectedMarket = marketData.find((market) => market.id === marketID);
 
@@ -98,6 +106,7 @@ const ViewMarkets = () => {
 
   return (
     <Layout>
+
       
       <div style={{ paddingTop: '10%', paddingLeft: '8%', display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'center' }}>
         <Typography variant="h3" style={{ color: 'black', textAlign: 'center', marginTop: ' 15px' }}>
@@ -166,6 +175,7 @@ const ViewMarkets = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </Layout>
   );
 };

@@ -30,7 +30,7 @@
     margin: 0;
     padding: 0;
   }
-
+/* 
   .navbar-toggler:focus,
   a:focus,
   input:focus,
@@ -46,7 +46,7 @@
     border-color: none !important;
     -webkit-box-shadow: none !important;
             box-shadow: none !important;
-  }
+  } */
 
   .form-check-input:checked {
     background-color: #3E80FF;
@@ -129,25 +129,25 @@
     color: inherit;
   }
 
-  h1 {
+  /* h1 {
     font-size: 50px;
   }
 
   h2 {
     font-size: 40px;
-  }
+  } */
 
-  h3 {
+  /* h3 {
     font-size: 30px;
-  }
+  } */
 
-  h4 {
+  /* h4 {
     font-size: 25px;
   }
 
   h5 {
     font-size: 20px;
-  }
+  } */
 
   h6 {
     font-size: 16px;
@@ -1572,9 +1572,9 @@
     .header .navbar-nav .nav-item:hover a {
       color: #3E80FF;
     }
-    .header .navbar-nav .nav-item a {
+    /* .header .navbar-nav .nav-item a {
       padding: 12px 16px !important;
-    }
+    } */
     .header .navbar-nav .nav-item a::before {
       display: none;
     }
@@ -2143,7 +2143,7 @@
     }
   }
 
-  .hero-area .hero-content h4 {
+  /* .hero-area .hero-content h4 {
     color: #fff;
     font-weight: 600;
     font-size: 15px;
@@ -2156,7 +2156,7 @@
     line-height: 60px;
     color: #fff;
     text-transform: capitalize;
-  }
+  } */
 
   .hero-area .hero-content h1 span {
     position: relative;

@@ -1,8 +1,8 @@
 import React from "react";
-import Home from "./pages";
-import CreateMarket from "./createMarket"
-import Profile from "./Profile";
-import ViewMarket from "./viewMarket";
+import Home from "./pages/landingPage";
+import CreateMarket from "./pages/createMarket"
+import Profile from "./pages/Profile";
+import ViewMarket from "./pages/viewMarket";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 

@@ -23,11 +23,11 @@ import {
 import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 
 
-import contractABI from "../ABIs/marketRegistery.json";
-import NewMarket from "../ABIs/store/NewMarket.js";
+import contractABI from "../../ABIs/marketRegistery.json";
+import NewMarket from "../../ABIs/store/NewMarket.js";
 
 
 

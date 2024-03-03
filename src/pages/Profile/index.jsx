@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Grid, Typography, Paper, Button, Button as MUIButton, List, ListItem, ListItemText, ListItemIcon, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 import LinkIcon from '@mui/icons-material/Link';
 import { createClient } from '@supabase/supabase-js';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import contractABI from "../ABIs/marketRegistery.json";
+import contractABI from "../../ABIs/marketRegistery.json";
 import { ethers } from "ethers";
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import { Alchemy, Network } from "alchemy-sdk";
