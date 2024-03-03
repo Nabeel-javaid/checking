@@ -3,6 +3,7 @@ import Home from "./pages/landingPage";
 import CreateMarket from "./pages/createMarket"
 import Profile from "./pages/Profile";
 import ViewMarket from "./pages/viewMarket";
+// import Aboutus from "./pages/aboutUs";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 
@@ -19,6 +20,8 @@ function App() {
           <Route path="/create-market" element={<CreateMarket />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/view-market" element={<ViewMarket />} />
+          {/* <Route path="/aboutus" element={<Aboutus />} /> */}
+          
           
         </Routes>
       </BrowserRouter>

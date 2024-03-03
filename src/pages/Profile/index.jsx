@@ -8,6 +8,7 @@ import contractABI from "../../ABIs/marketRegistery.json";
 import { ethers } from "ethers";
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import { Alchemy, Network } from "alchemy-sdk";
+import Footer from "../../Footer"
 
 
 const supabaseUrl = "https://lmsbzqlwsedldqxqwzlv.supabase.co"
@@ -347,6 +348,7 @@ const UserProfile = () => {
           )}
         </Grid>
       </Container>
+      <Footer/>
     </Layout>
   );
 };

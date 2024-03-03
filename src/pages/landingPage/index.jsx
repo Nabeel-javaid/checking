@@ -9,7 +9,9 @@ import TradingToolsSection from "../../sections/TradingTools";
 import SecuritySection from "../../sections/Security";
 import GetStarted from "../../sections/GetStarted";
 import Faq from "../../sections/Faq";
+import ContactSection from "../../sections/contactUs";
 import BackToTop from "../../sections/BackToTop";
+
 
 export default function index() {
   return (
@@ -23,7 +25,9 @@ export default function index() {
       <SecuritySection />
       <GetStarted />
       <Faq />
+      <ContactSection />
       <BackToTop />
+
       <Footer />
     </Layout>
   );
