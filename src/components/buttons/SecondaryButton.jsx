@@ -9,10 +9,10 @@ export default function SecondaryButton({
   ...props
 }) {
   const cx = classNames(
-    "border border-primary text-primary hover:bg-primary transition-colors duration-300 hover:text-white rounded-full py-4 px-10",
+    "border border-primary text-primary hover:bg-Red-500 transition-colors duration-300 rounded-full py-3 px-4",
     className
   );
-
+  
   return (
     <button onClick={onClick} className={cx} {...props}>
       {children}

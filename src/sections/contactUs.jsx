@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form'; // Assuming you're using react-hook-form for form handling
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import '../styles/contact.css';
-
-
-import '../styles/bootstrap.min.css';
-
-
+import '../styles/bootstrap.min.css'; 
 
 const ContactSection = () => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const onSubmit = data => {
-    // Form submission logic here
-    console.log(data);
-    // You can integrate with services like Formspree by sending data in POST request
-    // Remember to handle response and errors
-    reset(); // Clear form after submission
+    // Replace 'YOUR_FORMSPREE_ENDPOINT' with your actual Formspree URL
+    const formspreeEndpoint = 'https://formspree.io/f/xbjnyvde';
+    
+    fetch(formspreeEndpoint, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log('Form successfully submitted');
+        alert('Form submitted successfully!');
+        reset(); // Clear form after successful submission
+      } else {
+        return response.json().then(errorData => {
+          // Handle JSON error response
+          throw new Error(errorData.error);
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error submitting form:', error.message);
+    });
   };
 
   return (
