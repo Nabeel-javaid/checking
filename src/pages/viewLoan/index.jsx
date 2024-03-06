@@ -80,12 +80,36 @@ const ViewLoan = () => {
   const [selectedLoan, setSelectedLoan] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [acceptingLoan, setAcceptingLoan] = useState(false); // New state for loading during acceptance
+  const [marketDetails, setMarketDetails] = useState(null);
 
   const loansPerPage = 9;
   const MID = useParams();
 
   useEffect(() => {
+
+    const loadMarketDetails = async (marketID) => {
+      try {
+        const { data: Market, error } = await supabase
+          .from('Markets')
+          .select('*')
+          .eq('id', marketID);
+  
+        if (error) {
+          console.error('Error loading data from Supabase:', error);
+          toast.error('Error loading data. Please try again.'); // Display error toast
+        } else if (Market && Market.length > 0) {
+          setMarketDetails(Market[0]);
+        } else {
+          console.warn('No market details found for ID:', marketID);
+          toast.warn('No market details found.'); // Display warning toast
+        }
+      } catch (error) {
+        console.error('Unexpected error while loading market details:', error);
+        toast.error('Unexpected error. Please try again.'); // Display error toast
+      }
+    };
     const loadLoans = async () => {
+      await loadMarketDetails(MID.market);
       const { data: LoanBid, error } = await supabase
         .from('LoanBid')
         .select('*')
@@ -100,7 +124,7 @@ const ViewLoan = () => {
     };
 
     loadLoans();
-  }, [MID]);
+  }, [MID.market]);
 
   const loanImages = [
     'https://i.ibb.co/CzzXqK6/7xm-xyz648911.png',
@@ -728,79 +752,87 @@ const ViewLoan = () => {
 
   return (
     <Layout>
-      <div style={{ paddingTop: '10%' }}>
-        <Typography variant="h3" style={{ color: 'black', textAlign: 'center' }}>
-          <strong>Loans in Market</strong>
-        </Typography>
+      {marketDetails && !marketDetails.isClosed ? (
+        <>
+          <div style={{ paddingTop: '10%' }}>
+            <Typography variant="h3" style={{ color: 'black', textAlign: 'center' }}>
+              <strong>Loans in Market</strong>
+            </Typography>
 
-        <div className="feature section">
-          <div className="container">
-            {acceptingLoan && (
-              <div style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundColor: 'transparent', // Semi-transparent white background
-                zIndex: 9999,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-                <ScaleLoader color={"#123abc"} loading={acceptingLoan} size={22} />
-              </div>
-            )}
-
-            {loading && (
-              <iframe title="Loading" src="https://lottie.host/?file=474793e3-81ee-474c-bc0b-78562b8fa02e/dwOgWo0OlT.json"></iframe>
-            )}
-            {error && <p>{error}</p>}
-
-            {!loading && loansData.length > 0 ? (
-              renderLoans()
-            ) : (
-              <div className="col-md-12 col-sm-12">
-                <div className="feature-box">
-                  <div className="icon">
-                    <i className="lni lni-rocket"></i>
+            <div className="feature section">
+              <div className="container">
+                {acceptingLoan && (
+                  <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'transparent', // Semi-transparent white background
+                    zIndex: 9999,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                    <ScaleLoader color={"#123abc"} loading={acceptingLoan} size={22} />
                   </div>
-                  <Typography variant="h5">There are no loans available</Typography>
+                )}
+
+                {loading && (
+                  <iframe title="Loading" src="https://lottie.host/?file=474793e3-81ee-474c-bc0b-78562b8fa02e/dwOgWo0OlT.json"></iframe>
+                )}
+                {error && <p>{error}</p>}
+
+                {!loading && loansData.length > 0 ? (
+                  renderLoans()
+                ) : (
+                  <div className="col-md-12 col-sm-12">
+                    <div className="feature-box">
+                      <div className="icon">
+                        <i className="lni lni-rocket"></i>
+                      </div>
+                      <Typography variant="h5">There are no loans available</Typography>
+                    </div>
+                  </div>
+                )}
+
+                <div className={classes.pagination} style={{ position: 'absolute', right: '45%', bottom: '7%' }}>
+                  {totalPages > 1 && (
+                    <Pagination
+                      count={totalPages}
+                      page={currentPage}
+                      onChange={handlePageChange}
+                      color="primary"
+                      shape="rounded"
+                      showFirstButton
+                      showLastButton
+                    />
+                  )}
                 </div>
+                {/* Loan Details Dialog */}
+                {renderLoanDetailsDialog()}
               </div>
-            )}
-
-            <div className={classes.pagination} style={{ position: 'absolute', right: '45%', bottom: '7%' }}>
-              {totalPages > 1 && (
-                <Pagination
-                  count={totalPages}
-                  page={currentPage}
-                  onChange={handlePageChange}
-                  color="primary"
-                  shape="rounded"
-                  showFirstButton
-                  showLastButton
-                />
-              )}
             </div>
-            {/* Loan Details Dialog */}
-            {renderLoanDetailsDialog()}
           </div>
-        </div>
-      </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
+        </>
+      ) : (
+          <iframe
+          src="https://lottie.host/embed/7207cecd-7148-4266-ac54-38484060dc56/a9kOWn6XTr.json"
+          style={{ width: '100%', height: '30rem', paddingTop: '10%'}}
+          ></iframe>
+      )}
     </Layout>
   );
 };

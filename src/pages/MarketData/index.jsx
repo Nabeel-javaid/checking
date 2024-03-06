@@ -137,7 +137,7 @@ const MarketData = () => {
 
       if (error) {
         console.error('Error loading data from Supabase:', error);
-        toast.error('Error loading data from Supabase. Please try again.'); // Display error toast
+        toast.error('Error loading data. Please try again.'); // Display error toast
       } else if (Market && Market.length > 0) {
         setMarketDetails(Market[0]);
       } else {
@@ -191,7 +191,7 @@ const MarketData = () => {
 
   
 <Layout>
-  {marketDetails.isClosed === false ? (
+  {marketDetails && !marketDetails.isClosed ? (
     <Container style={{ marginTop: '120px' }}>
       <Typography
         variant="h5"
