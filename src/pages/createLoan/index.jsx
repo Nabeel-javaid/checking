@@ -13,11 +13,18 @@ import Lottie from "lottie-react";
 import { Alchemy, Network } from "alchemy-sdk";
 import ListItemIcon from '@mui/material/ListItemIcon';
 import COINS_LIST from '../../ABIs/store/uniswap.json';
+import { createClient } from '@supabase/supabase-js';
 
 import YOUR_CONTRACT_ABI from '../../ABIs/tellerv2.json';
 import { useParams } from 'react-router';
 
 const YOUR_CONTRACT_ADDRESS = '0x18a6bcad5e52cbecc34b987697fc7be15edf9599';
+const supabaseUrl = "https://lmsbzqlwsedldqxqwzlv.supabase.co"
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxtc2J6cWx3c2VkbGRxeHF3emx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc5ODA2MTEsImV4cCI6MjAxMzU1NjYxMX0.-qVOdECSW9hfokq8N99gCH2BZYpWooXy7zOz1e6fBHM"
+
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 
 const CollateralType = {
   ERC20: 0,
@@ -52,6 +59,7 @@ function CreateLoan() {
   const [collateralAddress, setCollateralAddress] = useState('');
   const [top200Coins, setTop200Coins] = useState([]);
   const [metaData, setMetaData] = useState([]);
+  const [marketDetails, setMarketDetails] = useState(null);
 
   let minAPR = 0;
   let maxCollateral = 0;
@@ -60,12 +68,13 @@ function CreateLoan() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    loadMarketDetails();
 
     const getCoins = async () => {
       try {
 
         toast.success("Please wait while we fetch the tokens in your wallet!")
-        setLoading(true);
+        setLoading(true); 
 
         const signer = provider.getSigner();
         const address = await signer.getAddress();
@@ -100,7 +109,6 @@ function CreateLoan() {
             address: token.contractAddress,
           });
         }
-
 
         setMetaData(metadataArray);
         setLoading(false);
@@ -166,6 +174,22 @@ function CreateLoan() {
       console.error('Error: ', error);
     }
   };
+
+  const loadMarketDetails = async () => {
+    try {
+      console.log(MID.market)
+      const { data: Market, error } = await supabase
+      .from('Markets')
+      .select('*')
+      .eq('id', MID.market);
+
+      setMarketDetails(Market[0]);
+      console.log(marketDetails);
+    } catch (error) {
+      console.error('Unexpected error while loading market details:', error);
+      toast.error('Unexpected error. Please try again.'); // Display error toast
+    }
+  }
 
   useEffect(() => {
     setTop200Coins(COINS_LIST.tokens.slice(0, 50));
@@ -267,158 +291,125 @@ function CreateLoan() {
 
   return (
     <Layout>
+      {marketDetails && !marketDetails.isClosed ? (
+        <>
+        <Box display="flex" justifyContent="space-between" style={{ marginTop: '10%', marginBottom: '6%' }}>
 
 
-      <Box display="flex" justifyContent="space-between" style={{ marginTop: '10%', marginBottom: '6%' }}>
+          <Paper elevation={3} style={{ padding: '20px', paddingTop: '80px', paddingBottom: '20px', maxWidth: '650px', margin: '20px auto', textAlign: 'center', marginLeft: '90px', marginTop: '28px' }}>
 
-
-        <Paper elevation={3} style={{ padding: '20px', paddingTop: '80px', paddingBottom: '20px', maxWidth: '650px', margin: '20px auto', textAlign: 'center', marginLeft: '90px', marginTop: '28px' }}>
-
-          <Typography variant="h5" gutterBottom style={{ fontFamily: 'Arial', fontWeight: 'bold', fontSize: '1.4rem', marginTop: '-50px', marginBottom: '50px' }}>
-            Loan Bid Submission
-          </Typography>
-
-
-
-          {/* <ContactArea/> */}
-          <form onSubmit={handleSubmit} >
-            <Grid container spacing={2}>
-
-
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel style={{ fontWeight: 'normal', marginLeft: '-2px' }}>Lending Token</InputLabel>
-                  <Select
-                    value={lendingToken}
-                    onChange={(e) => {
-                      const selectedCoin = top200Coins.find((coin) => coin.address === e.target.value);
-                      setLendingToken(selectedCoin ? selectedCoin.address : '');
-
-                    }}
-                    label="Lending Token Address"
-                  >
-                    {top200Coins.map((coin) => (
-                      <MenuItem key={coin.address} value={coin.address}>
-                        <Typography variant="inherit">
-                          <img src={coin.logoURI} width="26" height="26" />
-                          {/* <span style={{ marginLeft: '8px' }}>{coin.logoURI}</span> */}
-
-                          <span style={{ marginLeft: '8px' }}>{coin.name}</span>
-                          <span style={{ marginLeft: '4px', color: '#888' }}> ({coin.symbol})</span>
-                        </Typography>
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+            <Typography variant="h5" gutterBottom style={{ fontFamily: 'Arial', fontWeight: 'bold', fontSize: '1.4rem', marginTop: '-50px', marginBottom: '50px' }}>
+              Loan Bid Submission
+            </Typography>
 
 
 
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Marketplace ID"
-                  value={MID.market}
-                  disabled
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Principal"
-                  value={principal}
-                  onChange={(e) => setPrincipal(e.target.value)}
-                  error={Boolean(errors.principal)}
-                  helperText={errors.principal}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Duration"
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
-                  error={Boolean(errors.duration)}
-                  helperText={errors.duration}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="APR"
-                  value={APR}
-                  placeholder={minAPR}
-                  onChange={(e) => setAPR(e.target.value)}
-                  error={Boolean(errors.APR)}
-                  helperText={errors.APR}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Receiver Address"
-                  value={receiver}
-                  onChange={(e) => setReceiver(e.target.value)}
-                  error={Boolean(errors.receiver)}
-                  helperText={errors.receiver}
-                />
-              </Grid>
+            {/* <ContactArea/> */}
+            <form onSubmit={handleSubmit} >
+              <Grid container spacing={2}>
 
 
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel
-                    style={{ fontWeight: 'normal', marginLeft: '-2px', }}
-                  >
-                    Collateral Type
-                  </InputLabel>
-                  <Select
-                    value={collateralType}
-                    onChange={(e) => setCollateralType(e.target.value)}
-                    label="Collateral Type"
-                  >
-                    <MenuItem value={CollateralType.ERC20}>ERC20</MenuItem>
-                    <MenuItem value={CollateralType.ERC721}>ERC721</MenuItem>
-                    <MenuItem value={CollateralType.ERC1155}>ERC1155</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <InputLabel style={{ fontWeight: 'normal', marginLeft: '-2px' }}>Lending Token</InputLabel>
+                    <Select
+                      value={lendingToken}
+                      onChange={(e) => {
+                        const selectedCoin = top200Coins.find((coin) => coin.address === e.target.value);
+                        setLendingToken(selectedCoin ? selectedCoin.address : '');
 
-              {collateralType === CollateralType.ERC721 && !fetchingNFTs ? (
+                      }}
+                      label="Lending Token Address"
+                    >
+                      {top200Coins.map((coin) => (
+                        <MenuItem key={coin.address} value={coin.address}>
+                          <Typography variant="inherit">
+                            <img src={coin.logoURI} width="26" height="26" />
+                            {/* <span style={{ marginLeft: '8px' }}>{coin.logoURI}</span> */}
+
+                            <span style={{ marginLeft: '8px' }}>{coin.name}</span>
+                            <span style={{ marginLeft: '4px', color: '#888' }}> ({coin.symbol})</span>
+                          </Typography>
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+
+
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Marketplace ID"
+                    value={MID.market}
+                    disabled
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Principal"
+                    value={principal}
+                    onChange={(e) => setPrincipal(e.target.value)}
+                    error={Boolean(errors.principal)}
+                    helperText={errors.principal}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Duration"
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value)}
+                    error={Boolean(errors.duration)}
+                    helperText={errors.duration}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="APR"
+                    value={APR}
+                    placeholder={minAPR}
+                    onChange={(e) => setAPR(e.target.value)}
+                    error={Boolean(errors.APR)}
+                    helperText={errors.APR}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Receiver Address"
+                    value={receiver}
+                    onChange={(e) => setReceiver(e.target.value)}
+                    error={Boolean(errors.receiver)}
+                    helperText={errors.receiver}
+                  />
+                </Grid>
+
+
                 <Grid item xs={12}>
                   <FormControl fullWidth>
                     <InputLabel
                       style={{ fontWeight: 'normal', marginLeft: '-2px', }}
                     >
-                      {userNFTs.length === 0 ? "No NFTS Found" : "Collateral NFT"}
+                      Collateral Type
                     </InputLabel>
                     <Select
-                      value={tokenId}
-                      onChange={(e) => setTokenId(e.target.value)}
-                      label={userNFTs.length === 0 ? "No NFTS Found" : "Collateral NFT"}
+                      value={collateralType}
+                      onChange={(e) => setCollateralType(e.target.value)}
+                      label="Collateral Type"
                     >
-                      {userNFTs.map((nft, index) => (
-                        (nft.contract.isSpam === false || nft.contract.isSpam === undefined) && nft.tokenType === 'ERC721' ? (
-                          <MenuItem value={nft.tokenId} key={index}>
-                            <Typography variant="inherit">
-                              <img
-                                src={
-                                  nft.contract.openSeaMetadata.imageUrl === undefined ? nft.image.originalUrl : nft.contract.openSeaMetadata.imageUrl
-                                }
-                                width="35"
-                                height="35" />
-                              &nbsp;
-                              &nbsp;
-                              {nft.contract.openSeaMetadata.collectionName + " #" + nft.tokenId}</Typography>
-                          </MenuItem>
-                        ) : null
-                      ))}
+                      <MenuItem value={CollateralType.ERC20}>ERC20</MenuItem>
+                      <MenuItem value={CollateralType.ERC721}>ERC721</MenuItem>
+                      <MenuItem value={CollateralType.ERC1155}>ERC1155</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
-              ) : (
-                collateralType === CollateralType.ERC1155 && !fetchingNFTs ? (
+
+                {collateralType === CollateralType.ERC721 && !fetchingNFTs ? (
                   <Grid item xs={12}>
                     <FormControl fullWidth>
                       <InputLabel
@@ -432,22 +423,18 @@ function CreateLoan() {
                         label={userNFTs.length === 0 ? "No NFTS Found" : "Collateral NFT"}
                       >
                         {userNFTs.map((nft, index) => (
-                          (nft.contract.isSpam === false || nft.contract.isSpam === undefined) && nft.tokenType === 'ERC1155' ? (
+                          (nft.contract.isSpam === false || nft.contract.isSpam === undefined) && nft.tokenType === 'ERC721' ? (
                             <MenuItem value={nft.tokenId} key={index}>
-                              <ListItemIcon>
+                              <Typography variant="inherit">
                                 <img
                                   src={
                                     nft.contract.openSeaMetadata.imageUrl === undefined ? nft.image.originalUrl : nft.contract.openSeaMetadata.imageUrl
                                   }
-                                  width="20"
-                                  height="20" />
-                              </ListItemIcon>
-                              <Typography variant="inherit">
-                                {nft.contract.openSeaMetadata.collectionName === undefined ?
-                                  nft.collection.name :
-                                  nft.contract.openSeaMetadata.collectionName
-                                }
-                              </Typography>
+                                  width="35"
+                                  height="35" />
+                                &nbsp;
+                                &nbsp;
+                                {nft.contract.openSeaMetadata.collectionName + " #" + nft.tokenId}</Typography>
                             </MenuItem>
                           ) : null
                         ))}
@@ -455,98 +442,142 @@ function CreateLoan() {
                     </FormControl>
                   </Grid>
                 ) : (
-                  <>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        fullWidth
-                        label="Collateral Amount"
-                        value={collateralAmount}
-                        onChange={(e) => setCollateralAmount(e.target.value)}
-                        error={Boolean(errors.collateralAmount)}
-                        helperText={errors.collateralAmount}
-                      />
-                    </Grid>
-
+                  collateralType === CollateralType.ERC1155 && !fetchingNFTs ? (
                     <Grid item xs={12}>
                       <FormControl fullWidth>
                         <InputLabel
                           style={{ fontWeight: 'normal', marginLeft: '-2px', }}
                         >
-                          {metaData.length === 0 ? "No Coins Found" : "Collateral Address"}
+                          {userNFTs.length === 0 ? "No NFTS Found" : "Collateral NFT"}
                         </InputLabel>
                         <Select
-                          value={collateralAddress}
-                          onChange={(e) => setCollateralAddress(e.target.value)}
-                          label={metaData.length === 0 ? "No Coins Found" : "Collateral Address"}
+                          value={tokenId}
+                          onChange={(e) => setTokenId(e.target.value)}
+                          label={userNFTs.length === 0 ? "No NFTS Found" : "Collateral NFT"}
                         >
-                          {metaData.map((data, index) => (
-                            <MenuItem value={data.address} key={index}>
-                              <Typography variant="inherit">
-
-                                <img
-                                  src={data.logo}
-                                  width="20"
-                                  height="20" />
-                                &nbsp;
-                                {data.name}
-                              </Typography>
-                            </MenuItem>
+                          {userNFTs.map((nft, index) => (
+                            (nft.contract.isSpam === false || nft.contract.isSpam === undefined) && nft.tokenType === 'ERC1155' ? (
+                              <MenuItem value={nft.tokenId} key={index}>
+                                <ListItemIcon>
+                                  <img
+                                    src={
+                                      nft.contract.openSeaMetadata.imageUrl === undefined ? nft.image.originalUrl : nft.contract.openSeaMetadata.imageUrl
+                                    }
+                                    width="20"
+                                    height="20" />
+                                </ListItemIcon>
+                                <Typography variant="inherit">
+                                  {nft.contract.openSeaMetadata.collectionName === undefined ?
+                                    nft.collection.name :
+                                    nft.contract.openSeaMetadata.collectionName
+                                  }
+                                </Typography>
+                              </MenuItem>
+                            ) : null
                           ))}
                         </Select>
                       </FormControl>
                     </Grid>
-                  </>
-                ))}
+                  ) : (
+                    <>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          fullWidth
+                          label="Collateral Amount"
+                          value={collateralAmount}
+                          onChange={(e) => setCollateralAmount(e.target.value)}
+                          error={Boolean(errors.collateralAmount)}
+                          helperText={errors.collateralAmount}
+                        />
+                      </Grid>
 
-              <Grid item xs={12}>
-                <Button variant="contained" color="primary" type="submit" style={{ marginTop: '20px', borderRadius: '404px' }}>
+                      <Grid item xs={12}>
+                        <FormControl fullWidth>
+                          <InputLabel
+                            style={{ fontWeight: 'normal', marginLeft: '-2px', }}
+                          >
+                            {metaData.length === 0 ? "No Coins Found" : "Collateral Address"}
+                          </InputLabel>
+                          <Select
+                            value={collateralAddress}
+                            onChange={(e) => setCollateralAddress(e.target.value)}
+                            label={metaData.length === 0 ? "No Coins Found" : "Collateral Address"}
+                          >
+                            {metaData.map((data, index) => (
+                              <MenuItem value={data.address} key={index}>
+                                <Typography variant="inherit">
 
-                  Submit Bid
-                </Button>
+                                  <img
+                                    src={data.logo}
+                                    width="20"
+                                    height="20" />
+                                  &nbsp;
+                                  {data.name}
+                                </Typography>
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </>
+                  ))}
+
+                <Grid item xs={12}>
+                  <Button variant="contained" color="primary" type="submit" style={{ marginTop: '20px', borderRadius: '404px' }}>
+
+                    Submit Bid
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
+            </form>
 
 
 
-          {loading && (
-            <div style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'transparent',
-              zIndex: 9999,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-              <ScaleLoader color={"#123abc"} loading={loading} size={22} />
-            </div>
-          )}
+            {loading && (
+              <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'transparent',
+                zIndex: 9999,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <ScaleLoader color={"#123abc"} loading={loading} size={22} />
+              </div>
+            )}
 
-        </Paper>
-        <Box display="flex" justifyContent="flex-end" style={{ marginTop: '10%' }}>
-          <Lottie
-            animationData={animationData}
-            style={{ width: '600px', height: '300px' }}
-          />
+          </Paper>
+          <Box display="flex" justifyContent="flex-end" style={{ marginTop: '10%' }}>
+            <Lottie
+              animationData={animationData}
+              style={{ width: '600px', height: '300px' }}
+            />
+          </Box>
         </Box>
-      </Box>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
+      </>
+      ) : (
+        <iframe
+        src="https://lottie.host/embed/7207cecd-7148-4266-ac54-38484060dc56/a9kOWn6XTr.json"
+        style={{ width: '100%', height: '30rem', paddingTop: '10%'}}
+        ></iframe>
+      )}
     </Layout>
   );
 }
