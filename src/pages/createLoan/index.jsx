@@ -87,9 +87,7 @@ function CreateLoan() {
 
           // Get metadata of token
           const metadata = await alchemy.core.getTokenMetadata(token.contractAddress);
-
-
-
+          
           // Game
           const coinLogo = await COINS_LIST.tokens.filter((taken) => taken.address === token.contractAddress);
 

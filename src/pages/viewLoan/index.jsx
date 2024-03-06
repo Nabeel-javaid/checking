@@ -84,6 +84,36 @@ const ViewLoan = () => {
   const loansPerPage = 9;
   const MID = useParams();
 
+  // Function to repay the full loan amount
+  function repayFullAmount(repayLoan) {
+    console.log(`Borrower repaid the full amount: ${repayLoan.Principal} ETH`);
+    // Additional logic to return collateral to borrower from escrow
+    // ...
+  }
+
+  // Function to repay a custom amount
+  function repayCustomAmount(repayLoan) {
+    const customRepaymentAmount = prompt('Enter the amount in ETH to repay:');
+      
+    // Check if the user entered a valid amount
+    if (customRepaymentAmount !== null && !isNaN(customRepaymentAmount) && parseFloat(customRepaymentAmount) > 0) {
+      console.log(`Borrower repaid a custom amount: ${customRepaymentAmount} ETH`);
+      // Additional logic to return collateral to borrower from escrow
+      // ...
+    }
+    else {
+      alert('Invalid amount entered. Please enter a valid positive number.');
+    }
+  }
+
+  // Function to repay the minimum amount
+  function repayMinimumAmount(repayLoan) {
+    const minimumRepaymentAmount = 0.002; // Set your minimum repayment amount
+    console.log(`Borrower repaid the minimum amount: ${minimumRepaymentAmount} ETH`);
+    // Additional logic to return collateral to borrower from escrow
+    // ...
+  }
+
   useEffect(() => {
     const loadLoans = async () => {
       const { data: LoanBid, error } = await supabase
@@ -686,13 +716,29 @@ const ViewLoan = () => {
     </Button>
   )}
   {selectedLoan?.BorrowerAddress === currentAccountAddress && selectedLoan?.Status.toLowerCase() === 'accepted' && (
-    <Button
+    <>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => {repayFullAmount(selectedLoan)}}
+      >
+        Repay Full Loan
+      </Button>
+      <Button
       variant="contained"
       color="primary"
-      onClick={() => {/* Function to handle repayment */}}
-    >
-      Repay Loan
-    </Button>
+      onClick={() => {repayMinimumAmount(selectedLoan)}}
+      >
+        Repay Minimum Loan
+      </Button>
+      <Button
+      variant="contained"
+      color="primary"
+      onClick={() => {repayCustomAmount(selectedLoan)}}
+      >
+        Repay Custom Loan
+      </Button>
+  </>
   )}
 </DialogActions>
 
