@@ -699,7 +699,7 @@ const ViewLoan = () => {
           color="primary"
           onClick={() => fetchCollateral()}
         >
-          Fetch Collateral
+          Claim Collateral
         </Button>
       )}
     </>
