@@ -155,7 +155,8 @@ const ViewLoan = () => {
 
   const fetchCollateral = async (selLoan) => {
     try {
-
+      setAcceptingLoan(true); 
+      setDialogOpen(false);
       console.log(selLoan);
 
         const signer = provider.getSigner();
@@ -165,16 +166,22 @@ const ViewLoan = () => {
 
         const walletAddress = await signer.getAddress();
 
-        const amount = data.CollateralAmount
-        console.log('amount', amont);
         console.log('Sending funds to:', walletAddress);
 
-        const transactionResponse = await contract.withdrawETH(amount);
+        const ethAmount = ethers.utils.parseEther(selLoan.CollateralAmount);
+        console.log('amount', ethAmount);
+
+        const transactionResponse = await contract.withdrawETH(ethAmount);
         await transactionResponse.wait();
 
         console.log('Funds transferred successfully');
+        toast.success('Collateral Claimed successfully');
+
+        setAcceptingLoan(false); 
     } catch (error) {
         console.error('Failed to send funds:', error);
+        setAcceptingLoan(false); 
+        toast.error(`Error claiming collateral`);
     }
 };
 
