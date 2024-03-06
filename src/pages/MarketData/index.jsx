@@ -190,165 +190,114 @@ const MarketData = () => {
 
 
   
-    <Layout  >
+<Layout>
+  {marketDetails.isClosed === false ? (
+    <Container style={{ marginTop: '120px' }}>
+      <Typography
+        variant="h5"
+        fontWeight="bold"
+        color="black"
+        sx={{
+          marginBottom: '20px',
+          textAlign: 'center',
+          animation: 'fadeIn 1s ease-in-out',
+          '@keyframes fadeIn': {
+            from: { opacity: 0 },
+            to: { opacity: 1 },
+          },
+        }}
+      >
+        Market Details
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            {/* Market Details */}
+            <TableRow>
+              <TableCell>Market Name</TableCell>
+              <TableCell>{marketDetails.name}</TableCell>
+            </TableRow>
+            {/* Additional Market Details */}
+            <TableRow>
+              <TableCell>Additional Details</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Payment Cycle Duration</TableCell>
+              <TableCell>{marketDetails.paymentCycle}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Active Loans</TableCell>
+              <TableCell>20</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Total Value Locked</TableCell>
+              <TableCell>$1,000,000</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <ToastContainer />
 
+      {/* Card for Market Participants */}
+      <Card variant="filled">
+        <CardContent>
+          <Box display="flex" justifyContent="center">
+            <div>
+              <Typography variant="h5" marginLeft={"20px"} marginTop={"20px"} fontWeight={"bold"}>
+                Market Participants
+              </Typography>
+              <List>
+                {marketParticipants.map((participant, index) => (
+                  <ListItem key={index}>
+                    <ListItemAvatar>
+                      <Avatar>{/* You can customize the avatar based on the participant data */}</Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={'Borrower'}
+                      secondary={participant.BorrowerAddress}
+                    />
+                    <IconButton>{/* Add an icon or action button */}</IconButton>
+                  </ListItem>
+                ))}
+              </List>
+            </div>
+          </Box>
+        </CardContent>
+      </Card>
 
-
-
-    {/* <Typography variant="h5" fontWeight="bold" textcolor="black" sx={{ marginBottom: '20px' }}>
-      
-    </Typography> */}
-   
-  
-
- 
-  
-
-
-  <Container style={{ marginTop: '120px' }}  >
-    
-  <Typography
-  variant="h5"
-  fontWeight="bold"
-  color="black"
-  sx={{
-    marginBottom: '20px',
-    textAlign: 'center', // Align text to the center
-    animation: 'fadeIn 1s ease-in-out', // Apply fade-in animation
-    '@keyframes fadeIn': {
-      from: { opacity: 0 },
-      to: { opacity: 1 },
-    },
-  }}
->
-  Market Details
-</Typography>
-    <TableContainer component={Paper}>
-      <Table>
-        
-        <TableBody>
-          {/* Market Details */}
-          <TableRow>
-            <TableCell>Market Name</TableCell>
-            <TableCell>
-              {marketDetails.name}{' '}
-              
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Description</TableCell>
-            <TableCell>{marketDetails.description}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Owner Address</TableCell>
-            <TableCell>{marketDetails.owner}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>{marketDetails.id}</TableCell>
-          </TableRow>
-
-          {/* Additional Market Details */}
-          <TableRow>
-            <TableCell>Additional Details</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Payment Cycle Duration</TableCell>
-            <TableCell>{marketDetails.paymentCycle}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Active Loans</TableCell>
-            <TableCell>20</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Total Value Locked</TableCell>
-            <TableCell>$1,000,000</TableCell>
-          </TableRow>
-
-          {/* Action Buttons */}
-         
-        </TableBody>
-      </Table>
-    </TableContainer>
-    <ToastContainer />
-
-    
-  </Container>
-
-  
-
-  {/* Card for Market Participants */}
-  <Card variant="filled">
-  <CardContent>
-    <Box display="flex" justifyContent="center">
-      <div>
-        <Typography variant="h5" marginLeft={"20px"} marginTop={"20px"} fontWeight={"bold"}>Market Participants</Typography>
-        <List>
-        {marketParticipants.map((participant, index) => (
-          <ListItem key={index}>
-            <ListItemAvatar>
-              <Avatar>{/* You can customize the avatar based on the participant data */}</Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={'Borrower'}
-                  secondary={participant.BorrowerAddress}
-                />
-                  <IconButton>{/* Add an icon or action button */}</IconButton>
-                </ListItem>
-        ))}
-        </List>
-      </div>
-    </Box>
-  </CardContent>
-</Card>
-
-{/* //box card */}
-  <Box display="flex" justifyContent="center" >
+      {/* //box card */}
+      <Box display="flex" justifyContent="center">
         <Button
           variant="contained"
           color="info"
           onClick={() => {
             window.location.href = `/view-loans/${marketID}`;
           }}
-          sx={{ marginRight: '16px', marginBottom: '20px', borderRadius: '404px' }} // Add margin between buttons
+          sx={{ marginRight: '16px', marginBottom: '20px', borderRadius: '404px' }}
         >
           View Loans
         </Button>
-        {/* <Button
-          variant="contained"
-          color="info"
-          onClick={() => {
-            window.location.href = `/view-instant-loans/${marketID}`;
-          }}
-          sx={{ marginRight: '16px', marginBottom: '20px' }} // Add margin between buttons
-        >
-          View Instant Loans
-        </Button> */}
-        {/* <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            window.location.href = `/pre-commit-loan/${marketID}`;
-          }}
-          sx={{ marginRight: '16px', marginBottom: '20px' }} // Add margin between buttons
-        >
-          Create Instant Loan
-        </Button> */}
         <Button
           variant="contained"
           color="primary"
           onClick={() => {
             window.location.href = `/create-loan/${marketID}`;
           }}
-          sx={{marginBottom: '20px', borderRadius: '404px' }}
+          sx={{ marginBottom: '20px', borderRadius: '404px' }}
         >
           Create Loan
         </Button>
         {/* Add more buttons for other actions */}
       </Box>
+    </Container>
+  ) : (
+    <iframe
+    src="https://lottie.host/embed/7207cecd-7148-4266-ac54-38484060dc56/a9kOWn6XTr.json"
+    style={{ width: '100%', height: '30rem', paddingTop: '10%'}}
+    ></iframe>
+  )}
 </Layout>
-
   );
 };
 
