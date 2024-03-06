@@ -123,6 +123,10 @@ const ViewLoan = () => {
    
   };
 
+  const fetchCollateral = () => {
+    console.log(selectedLoan.Repaid, " = ", selectedLoan.Principal);
+  }
+
   const handleFilterChange = (event) => {
     setFilterStatus(event.target.value);
   };
@@ -190,7 +194,7 @@ const ViewLoan = () => {
 
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px', gap: '12px' }}>
                   <div style={{ width: '40px', height: '40px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#13131a' }}>
-                    <img src="https://i.ibb.co/DL3dtSj/avatar2-0.png" border="0" alt="user" className="w-1/2 h-1/2 object-contain" />
+                    <img src="https://i.ibb.co/DL3dtSj/avatar2-0.png" border="0" alt="user" className="object-contain w-1/2 h-1/2" />
                   </div>
                   <p style={{ marginTop: '3px', fontFamily: 'epilogue', fontWeight: 'bold', fontSize: '14px', color: '#000000', maxWidth: '120px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     by {data.RecieverAddress}
@@ -387,7 +391,7 @@ const ViewLoan = () => {
 
                   <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px', gap: '12px' }}>
                     <div style={{ width: '40px', height: '40px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#13131a' }}>
-                      <img src="https://i.ibb.co/DL3dtSj/avatar2-0.png" border="0" alt="user" className="w-1/2 h-1/2 object-contain" />
+                      <img src="https://i.ibb.co/DL3dtSj/avatar2-0.png" border="0" alt="user" className="object-contain w-1/2 h-1/2" />
                     </div>
                     <p style={{ marginTop: '3px', fontFamily: 'epilogue', fontWeight: 'bold', fontSize: '14px', color: '#000000', maxWidth: '120px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       by {data.BorrowerAddress}
@@ -687,7 +691,17 @@ const ViewLoan = () => {
   )}
   {selectedLoan?.BorrowerAddress === currentAccountAddress && selectedLoan?.Status.toLowerCase() === 'accepted' && (
     <>
-      <Repay selectedLoan={selectedLoan} />
+      {selectedLoan.Repaid < selectedLoan.Principal ? (
+        <Repay selectedLoan={selectedLoan} />
+      ) : (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => fetchCollateral()}
+        >
+          Fetch Collateral
+        </Button>
+      )}
     </>
   )}
 </DialogActions>
