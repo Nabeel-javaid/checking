@@ -616,12 +616,15 @@ const CreateMarket = () => {
                     </form>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <img
-                        src="https://i.ibb.co/QpRz6Wf/teller-v2-Step3-0c1ebb64.jpg" alt="teller-v2-Step3-0c1ebb64" border="0"
-                        style={{ width: "60%", marginTop: "25%", mixBlendMode: "multiply"}}
-                    />
+        
 
-                </Grid>
+        <iframe 
+          title="Loading" 
+          src="https://lottie.host/embed/b05e525f-ba09-4d82-96c3-4c6da796c0bb/YW5VTKbQ67.json" 
+          style={{ border: 0, width: "80%", height: "400px" }} // Adjust width and height as needed
+        />
+      </Grid>
+
                 <Dialog open={cancelDialogOpen} onClose={handleCancelCancel}>
                     <DialogTitle>Warning</DialogTitle>
                     <DialogContent>
