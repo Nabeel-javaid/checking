@@ -754,7 +754,7 @@ const ViewLoan = () => {
       Liquidate
     </Button>
   )}
-  {selectedLoan?.Status === 'Repaid' && selectedLoan.Repaid === selectedLoan.Principal && (
+  {selectedLoan?.Status === 'Repaid' && selectedLoan.Repaid === selectedLoan.Principal && selectedLoan?.BorrowerAddress === currentAccountAddress && (
     <Button
       variant="contained"
       color="primary"
