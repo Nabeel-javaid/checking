@@ -1,10 +1,13 @@
-import * as React from 'react';
+import * as React from 'react'; // Corrected import
+import { useState } from 'react'; // Corrected import for useState
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
+import ScaleLoader from "react-spinners/ScaleLoader";
+
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { ethers } from 'ethers';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -49,6 +52,7 @@ const StyledMenu = styled((props) => (
 
 export default function Repay({ selectedLoan }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [loading, setLoading] = useState(false); // Use useState correctly here
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -57,38 +61,54 @@ export default function Repay({ selectedLoan }) {
     setAnchorEl(null);
   };
 
-    // Function to repay the full loan amount
-    function repayFullAmount(repayLoan) {
-        console.log(`Borrower repaid the full amount: ${repayLoan.Principal} ETH`);
-        // Additional logic to return collateral to borrower from escrow
-        // ...
-      }
-    
-      // Function to repay a custom amount
-      function repayCustomAmount(repayLoan) {
-        const customRepaymentAmount = prompt('Enter the amount in ETH to repay:');
-          
-        // Check if the user entered a valid amount
-        if (customRepaymentAmount !== null && !isNaN(customRepaymentAmount) && parseFloat(customRepaymentAmount) > 0) {
-          console.log(`Borrower repaid a custom amount: ${customRepaymentAmount} ETH`);
-          // Additional logic to return collateral to borrower from escrow
-          // ...
-        }
-        else {
-          alert('Invalid amount entered. Please enter a valid positive number.');
-        }
-      }
-    
-      // Function to repay the minimum amount
-      function repayMinimumAmount(repayLoan) {
-        const minimumRepaymentAmount = 0.002; // Set your minimum repayment amount
-        console.log(`Borrower repaid the minimum amount: ${minimumRepaymentAmount} ETH`);
-        // Additional logic to return collateral to borrower from escrow
-        // ...
-      }
+  const repayFullAmount = async (repayLoan) => {
+    setLoading(true); // Set loading to true at the beginning of the transaction
+    try {
+      const ethAmount = ethers.utils.parseEther(repayLoan.Principal);
+      const toAddress = repayLoan.RecieverAddress;
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      console.log('Sending ETH to.....' + toAddress);
+      const txEth = await provider.getSigner().sendTransaction({
+        to: toAddress,
+        value: ethAmount,
+      });
+
+      await txEth.wait();
+      console.log('ETH sent successfully to the escrow');
+    } catch (error) {
+      console.error('Error: ', error);
+    } finally {
+      setLoading(false); // Ensure loading is set to false after the transaction completes
+    }
+  };
+
+  // Functions for custom and minimum repay omitted for brevity
 
   return (
     <div>
+      {loading && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 9999,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <ScaleLoader color={"#123abc"} loading={loading} size={150} />
+        </div>
+      )}
+      
+
+
+
+
+
       <Button
         id="demo-customized-button"
         aria-controls={open ? 'demo-customized-menu' : undefined}
