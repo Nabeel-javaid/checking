@@ -56,7 +56,7 @@ export default function BuyAndTrade() {
                 <Select value="BTC" />
               </div>
             </form> */}
-            <PrimaryButton className="w-50">Open Market</PrimaryButton>
+            <PrimaryButton className="w-49">Open Market</PrimaryButton>
           </div>
         </div>
         <div className="row-start-1 md:col-start-2">

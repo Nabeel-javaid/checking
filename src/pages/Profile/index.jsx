@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Grid, Typography, Paper, Button, Button as MUIButton, List, ListItem, ListItemText, ListItemIcon, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 import LinkIcon from '@mui/icons-material/Link';
 import { createClient } from '@supabase/supabase-js';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import contractABI from "../ABIs/marketRegistery.json";
+import contractABI from "../../ABIs/marketRegistery.json";
 import { ethers } from "ethers";
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import { Alchemy, Network } from "alchemy-sdk";
+import Footer from "../../Footer"
 
 
 const supabaseUrl = "https://lmsbzqlwsedldqxqwzlv.supabase.co"
@@ -121,6 +122,13 @@ const UserProfile = () => {
 
     fetchData();
   }, [supabase, walletAddress]);
+
+  useEffect(() => {
+    // Set the background color when the component mounts
+    document.body.style.backgroundColor = 'rgba(246,249,255,1)';
+
+  }, []);
+
 
   async function checkENS(walletAddressToCheck) {
     try {
@@ -340,6 +348,7 @@ const UserProfile = () => {
           )}
         </Grid>
       </Container>
+      <Footer/>
     </Layout>
   );
 };

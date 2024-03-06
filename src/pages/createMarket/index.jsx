@@ -23,11 +23,11 @@ import {
 import Tooltip from "@mui/material/Tooltip";
 import InfoIcon from "@mui/icons-material/Info";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 
 
-import contractABI from "../ABIs/marketRegistery.json";
-import NewMarket from "../ABIs/store/NewMarket.js";
+import contractABI from "../../ABIs/marketRegistery.json";
+import NewMarket from "../../ABIs/store/NewMarket.js";
 
 
 
@@ -618,7 +618,7 @@ const CreateMarket = () => {
                 <Grid item xs={12} md={6}>
                     <img
                         src="https://i.ibb.co/QpRz6Wf/teller-v2-Step3-0c1ebb64.jpg" alt="teller-v2-Step3-0c1ebb64" border="0"
-                        style={{ width: "60%", marginTop: "25%" }}
+                        style={{ width: "60%", marginTop: "25%", mixBlendMode: "multiply"}}
                     />
 
                 </Grid>
