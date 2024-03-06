@@ -687,7 +687,7 @@ const ViewLoan = () => {
   )}
   {selectedLoan?.BorrowerAddress === currentAccountAddress && selectedLoan?.Status.toLowerCase() === 'accepted' && (
     <>
-      <Repay />
+      <Repay selectedLoan={selectedLoan} />
     </>
   )}
 </DialogActions>
