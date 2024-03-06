@@ -10,7 +10,7 @@ export default function Hero() {
       <div className="container mx-auto grid md:grid-cols-2">
         <div className="flex items-center">
           <div className="space-y-4">
-            <p className="text-primary">SIGN UP TODAY</p>
+            <p className="text-primary">START TODAY</p>
             <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold max-w-xl leading-normal my-4">
               <span className="break-words">Say </span>
               <span className="break-words text-blue-gradient">

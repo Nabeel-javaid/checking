@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import Web3 from 'web3';
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { toast, ToastContainer } from "react-toastify";
+import Footer from "../../Footer"
 
 import {
     FormControl,
@@ -652,7 +653,7 @@ const CreateMarket = () => {
                 pauseOnHover
                 theme="colored"
             />
-
+<Footer/>
         </Layout>
     )
 }

@@ -16,7 +16,7 @@ export default function CreditCard() {
         <div className="flex items-center justify-center">
           <div className="max-w-md space-y-4">
             <h1 className="text-3xl font-bold">
-              Introducing the <span className=" text-blue-gradient">NEFA</span>
+              Introducing the <span className=" text-blue-gradient">LendNest</span>
               <br /> Credit Card
             </h1>
             <p>
@@ -30,7 +30,7 @@ export default function CreditCard() {
               </li>
               <li>
                 <BsCheckCircleFill className="inline text-primary mr-2" />
-                Earn rewards in bitcoin or any crypto on NEFA
+                Earn rewards in bitcoin or any crypto on LendNest
               </li>
               <li>
                 <BsCheckCircleFill className="inline text-primary mr-2" />
