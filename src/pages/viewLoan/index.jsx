@@ -18,6 +18,7 @@ import Repay from '../../components/Repay';
 const supabaseUrl = "https://lmsbzqlwsedldqxqwzlv.supabase.co"
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxtc2J6cWx3c2VkbGRxeHF3emx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc5ODA2MTEsImV4cCI6MjAxMzU1NjYxMX0.-qVOdECSW9hfokq8N99gCH2BZYpWooXy7zOz1e6fBHM"
 const supabase = createClient(supabaseUrl, supabaseKey);
+import contractABI from '../../ABIs/escrow2.json';
 
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -130,12 +131,27 @@ const ViewLoan = () => {
 
   const fetchCollateral = async () => {
     try {
-        // const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner(account);
-        const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
+      const { data: LoanBid, error } = await supabase
+        .from('LoanBid')
+        .select('*')
+
+      if (error) {
+        setError('Error loading loans. Please try again later.');
+      } 
+        const signer = provider.getSigner();
+        const contractAddress = '0x53c1f38ad0e8c6c3589abb6707ddd50d98022021'; // Replace with your contract address
+        const contract = new ethers.Contract(contractAddress, contractABI, signer);
+        
+
+        const walletAddress = await signer.getAddress();
+
+        const amount = data.CollateralAmount
+        console.log('amount', amont);
+        console.log('Sending funds to:', walletAddress);
         // Assuming the function to send funds is named 'transferFunds' and takes the recipient's address as a parameter
-        const transactionResponse = await contract.transferFunds(walletAddress);
+
+        const transactionResponse = await contract.withdrawETH(amount);
         await transactionResponse.wait();
 
         console.log('Funds transferred successfully');
@@ -143,6 +159,14 @@ const ViewLoan = () => {
         console.error('Failed to send funds:', error);
     }
 };
+
+
+
+
+
+
+
+
 
   const handleFilterChange = (event) => {
     setFilterStatus(event.target.value);
