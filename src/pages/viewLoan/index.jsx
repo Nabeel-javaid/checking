@@ -17,8 +17,11 @@ import Repay from '../../components/Repay';
 
 const supabaseUrl = "https://lmsbzqlwsedldqxqwzlv.supabase.co"
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxtc2J6cWx3c2VkbGRxeHF3emx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc5ODA2MTEsImV4cCI6MjAxMzU1NjYxMX0.-qVOdECSW9hfokq8N99gCH2BZYpWooXy7zOz1e6fBHM"
-
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+
+const provider = new ethers.providers.Web3Provider(window.ethereum);
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -123,9 +126,23 @@ const ViewLoan = () => {
    
   };
 
-  const fetchCollateral = () => {
-    console.log(selectedLoan.Repaid, " = ", selectedLoan.Principal);
-  }
+
+
+  const fetchCollateral = async () => {
+    try {
+        // const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner(account);
+        const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+        // Assuming the function to send funds is named 'transferFunds' and takes the recipient's address as a parameter
+        const transactionResponse = await contract.transferFunds(walletAddress);
+        await transactionResponse.wait();
+
+        console.log('Funds transferred successfully');
+    } catch (error) {
+        console.error('Failed to send funds:', error);
+    }
+};
 
   const handleFilterChange = (event) => {
     setFilterStatus(event.target.value);
@@ -209,7 +226,10 @@ const ViewLoan = () => {
                   position: 'absolute',
                   bottom: 0,
                   right: '6.8px', // Adjust the value as needed
-                  color: data.Status === 'Pending' ? 'red' : 'green',
+                  color: data.Status === 'Pending' ? 'Purple' : 
+       (data.Status === 'Accepted' ? 'Green' : 
+       (data.Status === 'Repaid' ? 'Green' : 'Red')),
+
                   textAlign: 'right',
                   padding: '22px',
                   fontWeight: 'bold',
@@ -237,7 +257,7 @@ const ViewLoan = () => {
 
       if (window.ethereum) {
         await window.ethereum.enable();
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
 
         const selectedLoan = loansData.find((loan) => loan.LoanID === loanID);
@@ -390,8 +410,8 @@ const ViewLoan = () => {
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px', gap: '12px' }}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#13131a' }}>
-                      <img src="https://i.ibb.co/DL3dtSj/avatar2-0.png" border="0" alt="user" className="object-contain w-1/2 h-1/2" />
+                    <div style={{ width: '50px', height: '50px',display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <img src="https://i.ibb.co/DL3dtSj/avatar2-0.png" border="0" alt="user" className="object-contain w-75 h-auto" />
                     </div>
                     <p style={{ marginTop: '3px', fontFamily: 'epilogue', fontWeight: 'bold', fontSize: '14px', color: '#000000', maxWidth: '120px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       by {data.BorrowerAddress}
@@ -406,8 +426,10 @@ const ViewLoan = () => {
                     position: 'absolute',
                     bottom: 0,
                     right: '6.8px', // Adjust the value as needed
-                    color: data.Status === 'Pending' ? 'Purple' : (data.Status === 'Accepted' ? 'Green' : 'Red'),
-                    textAlign: 'right',
+                    color: data.Status === 'Pending' ? 'Purple' : 
+                    (data.Status === 'Accepted' ? 'Green' : 
+                    (data.Status === 'Repaid' ? '#8D4004' : 'Red')),
+                                 textAlign: 'right',
                     padding: '22px',
                     fontWeight: 'bold',
                   }}
@@ -441,7 +463,7 @@ const ViewLoan = () => {
 
       if (window.ethereum) {
         await window.ethereum.enable();
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
 
         const selectedLoan = loansData.find((loan) => loan.LoanID === loanID);
@@ -507,7 +529,7 @@ const ViewLoan = () => {
   useEffect(() => {
     const fetchAccountAddress = async () => {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const accountAddress = await signer.getAddress();
 
