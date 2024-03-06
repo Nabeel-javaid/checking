@@ -115,7 +115,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="flex justify-center text-center text-lg text-gray py-4">
-        <h1>© Copyright 2022 NEFA LLC. All rights reserved</h1>
+        <h1>© Copyright 2024 LendNest LLC. All rights reserved</h1>
       </div>
     </footer>
   );
