@@ -153,30 +153,25 @@ const ViewLoan = () => {
 
 
 
-  const fetchCollateral = async () => {
+  const fetchCollateral = async (selLoan) => {
     try {
 
-      const { data: LoanBid, error } = await supabase
-        .from('LoanBid')
-        .select('*')
+      console.log(selLoan);
 
-      if (error) {
-        setError('Error loading loans. Please try again later.');
-      } 
-        const signer = provider.getSigner();
-        const contractAddress = '0x53c1f38ad0e8c6c3589abb6707ddd50d98022021'; // Replace with your contract address
-        const contract = new ethers.Contract(contractAddress, contractABI, signer);
+        // const signer = provider.getSigner();
+        // const contractAddress = '0x53c1f38ad0e8c6c3589abb6707ddd50d98022021'; // Replace with your contract address
+        // const contract = new ethers.Contract(contractAddress, contractABI, signer);
         
 
-        const walletAddress = await signer.getAddress();
+        // const walletAddress = await signer.getAddress();
 
-        const amount = data.CollateralAmount
-        console.log('amount', amont);
-        console.log('Sending funds to:', walletAddress);
+        // const amount = data.CollateralAmount
+        // console.log('amount', amont);
+        // console.log('Sending funds to:', walletAddress);
         // Assuming the function to send funds is named 'transferFunds' and takes the recipient's address as a parameter
 
-        const transactionResponse = await contract.withdrawETH(amount);
-        await transactionResponse.wait();
+        // const transactionResponse = await contract.withdrawETH(amount);
+        // await transactionResponse.wait();
 
         console.log('Funds transferred successfully');
     } catch (error) {
@@ -459,7 +454,7 @@ const ViewLoan = () => {
 
                   <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px', gap: '12px' }}>
                     <div style={{ width: '50px', height: '50px',display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <img src="https://i.ibb.co/DL3dtSj/avatar2-0.png" border="0" alt="user" className="object-contain w-75 h-auto" />
+                    <img src="https://i.ibb.co/DL3dtSj/avatar2-0.png" border="0" alt="user" className="object-contain h-auto w-75" />
                     </div>
                     <p style={{ marginTop: '3px', fontFamily: 'epilogue', fontWeight: 'bold', fontSize: '14px', color: '#000000', maxWidth: '120px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       by {data.BorrowerAddress}
@@ -763,7 +758,7 @@ const ViewLoan = () => {
     <Button
       variant="contained"
       color="primary"
-      onClick={() => fetchCollateral()}
+      onClick={() => fetchCollateral(selectedLoan)}
     >
       Claim Collateral
     </Button>

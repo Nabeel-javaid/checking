@@ -177,14 +177,12 @@ function CreateLoan() {
 
   const loadMarketDetails = async () => {
     try {
-      console.log(MID.market)
       const { data: Market, error } = await supabase
       .from('Markets')
       .select('*')
       .eq('id', MID.market);
 
       setMarketDetails(Market[0]);
-      console.log(marketDetails);
     } catch (error) {
       console.error('Unexpected error while loading market details:', error);
       toast.error('Unexpected error. Please try again.'); // Display error toast
