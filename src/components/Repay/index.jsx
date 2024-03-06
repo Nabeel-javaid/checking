@@ -5,9 +5,15 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ScaleLoader from "react-spinners/ScaleLoader";
+import { createClient } from '@supabase/supabase-js';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { ethers } from 'ethers';
+
+const supabaseUrl = "https://lmsbzqlwsedldqxqwzlv.supabase.co"
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxtc2J6cWx3c2VkbGRxeHF3emx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc5ODA2MTEsImV4cCI6MjAxMzU1NjYxMX0.-qVOdECSW9hfokq8N99gCH2BZYpWooXy7zOz1e6fBHM"
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -76,6 +82,17 @@ export default function Repay({ selectedLoan }) {
 
       await txEth.wait();
       console.log('ETH sent successfully to the escrow');
+
+      const { data: updatedLoan, error } = await supabase
+        .from('LoanBid')
+        .update({
+          Status: 'Repaid',
+          Repaid: selectedLoan.Principal,
+        })
+        .eq('LoanID', selectedLoan.LoanID);
+
+        location.reload();
+
     } catch (error) {
       console.error('Error: ', error);
     } finally {

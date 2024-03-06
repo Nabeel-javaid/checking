@@ -689,19 +689,18 @@ const ViewLoan = () => {
       Liquidate
     </Button>
   )}
+  {selectedLoan?.Status === 'Repaid' && selectedLoan.Repaid === selectedLoan.Principal && (
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={() => fetchCollateral()}
+    >
+      Claim Collateral
+    </Button>
+  )}
   {selectedLoan?.BorrowerAddress === currentAccountAddress && selectedLoan?.Status.toLowerCase() === 'accepted' && (
     <>
-      {selectedLoan.Repaid < selectedLoan.Principal ? (
-        <Repay selectedLoan={selectedLoan} />
-      ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => fetchCollateral()}
-        >
-          Claim Collateral
-        </Button>
-      )}
+      <Repay selectedLoan={selectedLoan} />
     </>
   )}
 </DialogActions>
