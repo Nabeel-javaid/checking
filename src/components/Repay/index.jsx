@@ -1,5 +1,5 @@
 import * as React from 'react'; // Corrected import
-import { useState } from 'react'; // Corrected import for useState
+import { useState, useEffect } from 'react'; // Corrected import for useState
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -59,6 +59,9 @@ const StyledMenu = styled((props) => (
 export default function Repay({ selectedLoan }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = useState(false); // Use useState correctly here
+  const [marketDetails, setMarketDetails] = useState([]); // Use useState correctly here
+  const [loanData, setLoanData] = useState([]); // Use useState correctly here
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -67,8 +70,37 @@ export default function Repay({ selectedLoan }) {
     setAnchorEl(null);
   };
 
+  const loadMarketDetails = async () => {
+    try {
+      console.log(selectedLoan)
+      const { data: Market, error } = await supabase
+      .from('Markets')
+      .select('*')
+      .eq('id', selectedLoan.MarketplaceID);
+
+      setMarketDetails(Market[0]);
+
+      console.log(marketDetails)
+
+      // const { data: updatedLoan, error2 } = await supabase
+      //   .from('LoanBid')
+      //   .select('*')
+      //   .eq('LoanID', selectedLoan.LoanID);
+
+      // setLoanData(updatedLoan[0]);
+
+
+    } catch (error) {
+      console.error('Unexpected error while loading market details:', error);
+      toast.error('Unexpected error. Please try again.'); // Display error toast
+    }
+  };
+
   const repayFullAmount = async (repayLoan) => {
     setLoading(true); // Set loading to true at the beginning of the transaction
+    loadMarketDetails();
+
+    console.log("Fee: ", marketDetails);
     try {
       const ethAmount = ethers.utils.parseEther(repayLoan.Principal);
       const toAddress = repayLoan.RecieverAddress;
