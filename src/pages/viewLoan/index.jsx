@@ -158,20 +158,19 @@ const ViewLoan = () => {
 
       console.log(selLoan);
 
-        // const signer = provider.getSigner();
-        // const contractAddress = '0x53c1f38ad0e8c6c3589abb6707ddd50d98022021'; // Replace with your contract address
-        // const contract = new ethers.Contract(contractAddress, contractABI, signer);
+        const signer = provider.getSigner();
+        const contractAddress = '0x53c1f38ad0e8c6c3589abb6707ddd50d98022021'; 
+        const contract = new ethers.Contract(contractAddress, contractABI, signer);
         
 
-        // const walletAddress = await signer.getAddress();
+        const walletAddress = await signer.getAddress();
 
-        // const amount = data.CollateralAmount
-        // console.log('amount', amont);
-        // console.log('Sending funds to:', walletAddress);
-        // Assuming the function to send funds is named 'transferFunds' and takes the recipient's address as a parameter
+        const amount = data.CollateralAmount
+        console.log('amount', amont);
+        console.log('Sending funds to:', walletAddress);
 
-        // const transactionResponse = await contract.withdrawETH(amount);
-        // await transactionResponse.wait();
+        const transactionResponse = await contract.withdrawETH(amount);
+        await transactionResponse.wait();
 
         console.log('Funds transferred successfully');
     } catch (error) {
