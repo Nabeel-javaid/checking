@@ -82,13 +82,6 @@ export default function Repay({ selectedLoan }) {
 
       console.log(marketDetails)
 
-      // const { data: updatedLoan, error2 } = await supabase
-      //   .from('LoanBid')
-      //   .select('*')
-      //   .eq('LoanID', selectedLoan.LoanID);
-
-      // setLoanData(updatedLoan[0]);
-
 
     } catch (error) {
       console.error('Unexpected error while loading market details:', error);
@@ -96,41 +89,120 @@ export default function Repay({ selectedLoan }) {
     }
   };
 
-  const repayFullAmount = async (repayLoan) => {
-    setLoading(true); // Set loading to true at the beginning of the transaction
-    loadMarketDetails();
+  
 
-    console.log("Fee: ", marketDetails);
-    try {
-      const ethAmount = ethers.utils.parseEther(repayLoan.Principal);
-      const toAddress = repayLoan.RecieverAddress;
 
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log('Sending ETH to.....' + toAddress);
-      const txEth = await provider.getSigner().sendTransaction({
-        to: toAddress,
-        value: ethAmount,
-      });
 
-      await txEth.wait();
-      console.log('ETH sent successfully to the escrow');
 
-      const { data: updatedLoan, error } = await supabase
-        .from('LoanBid')
-        .update({
-          Status: 'Repaid',
-          Repaid: selectedLoan.Principal,
-        })
-        .eq('LoanID', selectedLoan.LoanID);
 
-        location.reload();
 
-    } catch (error) {
-      console.error('Error: ', error);
-    } finally {
-      setLoading(false); // Ensure loading is set to false after the transaction completes
-    }
-  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const repayFullAmount = async (repayLoan) => {
+  setLoading(true); // Begin loading state
+
+  try {
+    // Load market details
+    await loadMarketDetails();
+
+    // Calculate and log the fee
+    const feeAmount = ethers.utils.parseEther(marketDetails.Fee);
+    console.log("Fee to send to Market Owner: ", feeAmount);
+
+    // Repay loan amount to the lender
+    const ethAmount = ethers.utils.parseEther(repayLoan.Principal);
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    console.log('Sending ETH to lender...');
+    const txEthLender = await provider.getSigner().sendTransaction({
+      to: repayLoan.RecieverAddress,
+      value: ethAmount,
+    });
+    await txEthLender.wait();
+    console.log('ETH sent successfully to the lender.');
+
+    // Update loan status in Supabase
+    const { error: updateLoanError } = await supabase
+      .from('LoanBid')
+      .update({ Status: 'Repaid', Repaid: repayLoan.Principal })
+      .eq('LoanID', repayLoan.LoanID);
+
+    if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
+
+    // Send fee to market owner
+    console.log('Sending Fee to Market Owner...');
+    const txEthFee = await provider.getSigner().sendTransaction({
+      to: marketDetails.owner,
+      value: feeAmount,
+    });
+    await txEthFee.wait();
+    console.log('Fee sent successfully to market owner.');
+
+    // Assuming you have the ownerId, and the Fees are tracked in a table named `MarketOwners`
+    // Update the fee for the market owner in the Supabase `MarketOwners` table
+    const { data: feeUpdateData, error: feeUpdateError } = await supabase
+      .from('Markets')
+      .update({ Fees: supabase.raw('Fees + ?', [marketDetails.Fee]) }) // This is pseudo-code; actual syntax will depend on your table structure
+      .eq('owner', marketDetails.owner); // Assuming `ownerId` is how you link to the specific market owner
+
+    if (feeUpdateError) throw new Error('Failed to update market owner fee in Supabase.');
+
+    console.log('Market owner fee updated in database.', feeUpdateData);
+
+    setLoading(false); // End loading state
+  } catch (error) {
+    console.error('Error during repayment process:', error);
+    setLoading(false); // Ensure loading is always reset
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Functions for custom and minimum repay omitted for brevity
 
