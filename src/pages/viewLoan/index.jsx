@@ -697,7 +697,8 @@ const ViewLoan = () => {
 
 
   const renderLoanDetailsDialog = () => (
-    <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+    <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth     PaperProps={{ style: { borderRadius: '20px' } }} // Add this line
+    >
       <DialogTitle style={{ background: '#4f4f4f', color: 'white' }}>Loan Details</DialogTitle>
       <DialogContent className={classes.dialog} dividers style={{ background: '#272727', color: 'white' }}>
         {selectedLoan && (
@@ -766,14 +767,22 @@ const ViewLoan = () => {
       
 
       <DialogActions style={{ background: '#4f4f4f', justifyContent: 'center' }}>
-  <Button onClick={handleCloseDialog} color="primary" variant="contained">
-    Close
-  </Button>
+      <Button
+  onClick={handleCloseDialog}
+  color="primary"
+  variant="contained"
+  sx={{ borderRadius: '19px' }} // Custom border radius
+>
+  Close
+</Button>
+
   {selectedLoan?.BorrowerAddress === currentAccountAddress && selectedLoan?.Status === 'Pending' && (
     <Button
       variant="contained"
       color="primary"
       onClick={() => cancelLoan(selectedLoan.LoanID)}
+      sx={{ borderRadius: '17px' }} // Custom border radius
+
     >
       Cancel Loan Bid
     </Button>
