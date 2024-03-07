@@ -590,6 +590,43 @@ const ViewLoan = () => {
     fetchAccountAddress();
   }, []);
 
+  const payMarket = async (loanFee) => {
+    try {
+      const feePercent = Number(marketDetails.Fee)/100;
+      const feeValue = Number(loanFee.Principal) * feePercent;
+      const fee = feeValue.toString();
+      const feeAmount = ethers.utils.parseEther(fee);
+      console.log("Fee to send to Market Owner: ", feeAmount, " ethers.");
+      // console.log('Sending Fee to Market Owner...');
+      // const txEthFee = await provider.getSigner().sendTransaction({
+      //   to: marketDetails.owner,
+      //   value: feeAmount,
+      // });
+      // await txEthFee.wait();
+      // console.log('Fee sent successfully to market owner.');
+
+      // // Update the Tax Collected for the market owner
+      // const { data: feeUpdateData, error: feeUpdateError } = await supabase
+      //   .from('Markets')
+      //   .update({ TaxCollected: feeAmount }) // This is pseudo-code; actual syntax will depend on your table structure
+      //   .eq('owner', marketDetails.id); // Assuming `ownerId` is how you link to the specific market owner
+
+      // // Update Loan Status
+      // const { error: updateLoanError } = await supabase
+      //   .from('LoanBid')
+      //   .update({ Status: 'Repaid' })
+      //   .eq('LoanID', loanFee.LoanID);
+
+      // if (feeUpdateError) throw new Error('Failed to update market owner fee in Supabase.');
+
+      // console.log('Market owner fee updated in database.', feeUpdateData);
+    }
+    catch (error) {
+      console.error('Failed to send funds:', error);
+      toast.error(`Error paying market fee`);
+    }
+  }
+
   const cancelLoan = async (loanID) => {
     try {
       setAcceptingLoan(true); // Set loading state to true
@@ -760,6 +797,15 @@ const ViewLoan = () => {
       Liquidate
     </Button>
   )}
+  {selectedLoan?.Status === 'Paying Market' && selectedLoan.Repaid === selectedLoan.Principal && selectedLoan?.BorrowerAddress === currentAccountAddress && (
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={() => payMarket(selectedLoan)}
+    >
+      Pay Market Fee
+    </Button>
+  )}
   {selectedLoan?.Status === 'Repaid' && selectedLoan.Repaid === selectedLoan.Principal && selectedLoan?.BorrowerAddress === currentAccountAddress && (
     <Button
       variant="contained"
@@ -771,7 +817,7 @@ const ViewLoan = () => {
   )}
   {selectedLoan?.BorrowerAddress === currentAccountAddress && selectedLoan?.Status.toLowerCase() === 'accepted' && (
     <>
-      <Repay selectedLoan={selectedLoan} />
+      <Repay selectedLoan={selectedLoan} marketDetails={marketDetails} />
     </>
   )}
 </DialogActions>

@@ -56,11 +56,9 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function Repay({ selectedLoan }) {
+export default function Repay({ selectedLoan, marketDetails }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = useState(false); // Use useState correctly here
-  const [marketDetails, setMarketDetails] = useState([]); // Use useState correctly here
-  const [loanData, setLoanData] = useState([]); // Use useState correctly here
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -70,116 +68,62 @@ export default function Repay({ selectedLoan }) {
     setAnchorEl(null);
   };
 
-  const loadMarketDetails = async () => {
-    try {
-      console.log(selectedLoan)
-      const { data: Market, error } = await supabase
-      .from('Markets')
-      .select('*')
-      .eq('id', selectedLoan.MarketplaceID);
-
-      setMarketDetails(Market[0]);
-
-      console.log(marketDetails)
-
-
-    } catch (error) {
-      console.error('Unexpected error while loading market details:', error);
-      toast.error('Unexpected error. Please try again.'); // Display error toast
-    }
-  };
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const repayFullAmount = async (repayLoan) => {
+const repayFullAmount = async () => {
   setLoading(true); // Begin loading state
 
   try {
-    // Load market details
-    await loadMarketDetails();
-
-    // Calculate and log the fee
-    const feeAmount = ethers.utils.parseEther(marketDetails.Fee);
-    console.log("Fee to send to Market Owner: ", feeAmount);
+    
+    // Calculate and log the fee to send to Market Owner
+    const feePercent = Number(marketDetails.Fee)/100;
+    const feeValue = Number(selectedLoan.Principal) * feePercent;
+    const fee = feeValue.toString();
+    const feeAmount = ethers.utils.parseEther(fee);
+    console.log("Fee to send to Market Owner: ", feeAmount, " ethers.");
 
     // Repay loan amount to the lender
-    const ethAmount = ethers.utils.parseEther(repayLoan.Principal);
+    // const ethAmount = ethers.utils.parseEther(selectedLoan.Principal);
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    console.log('Sending ETH to lender...');
-    const txEthLender = await provider.getSigner().sendTransaction({
-      to: repayLoan.RecieverAddress,
-      value: ethAmount,
-    });
-    await txEthLender.wait();
-    console.log('ETH sent successfully to the lender.');
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // console.log('Sending ETH to lender...');
+    // const txEthLender = await provider.getSigner().sendTransaction({
+    //   to: selectedLoan.RecieverAddress,
+    //   value: ethAmount,
+    // });
+    // await txEthLender.wait();
+    // console.log('ETH sent successfully to the lender.');
 
-    // Update loan status in Supabase
-    const { error: updateLoanError } = await supabase
-      .from('LoanBid')
-      .update({ Status: 'Repaid', Repaid: repayLoan.Principal })
-      .eq('LoanID', repayLoan.LoanID);
+    // Update Loan Status and Repaid Value
+    // const { error: updateLoanError } = await supabase
+    //   .from('LoanBid')
+    //   .update({ Status: 'Paying Market', Repaid: selectedLoan.Principal })
+    //   .eq('LoanID', selectedLoan.LoanID);
 
-    if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
+    // if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
 
-    // Send fee to market owner
-    console.log('Sending Fee to Market Owner...');
-    const txEthFee = await provider.getSigner().sendTransaction({
-      to: marketDetails.owner,
-      value: feeAmount,
-    });
-    await txEthFee.wait();
-    console.log('Fee sent successfully to market owner.');
+    // // Send fee to market owner
+    // console.log('Sending Fee to Market Owner...');
+    // const txEthFee = await provider.getSigner().sendTransaction({
+    //   to: marketDetails.owner,
+    //   value: feeAmount,
+    // });
+    // await txEthFee.wait();
+    // console.log('Fee sent successfully to market owner.');
 
-    // Assuming you have the ownerId, and the Fees are tracked in a table named `MarketOwners`
-    // Update the fee for the market owner in the Supabase `MarketOwners` table
-    const { data: feeUpdateData, error: feeUpdateError } = await supabase
-      .from('Markets')
-      .update({ Fees: supabase.raw('Fees + ?', [marketDetails.Fee]) }) // This is pseudo-code; actual syntax will depend on your table structure
-      .eq('owner', marketDetails.owner); // Assuming `ownerId` is how you link to the specific market owner
+    // Update the Tax Collected for the market owner
+    // const { data: feeUpdateData, error: feeUpdateError } = await supabase
+    //   .from('Markets')
+    //   .update({ TaxCollected: feeAmount }) // This is pseudo-code; actual syntax will depend on your table structure
+    //   .eq('owner', marketDetails.id); // Assuming `ownerId` is how you link to the specific market owner
 
-    if (feeUpdateError) throw new Error('Failed to update market owner fee in Supabase.');
+    // Update Loan Status
+    // const { error: updateLoanError } = await supabase
+    //   .from('LoanBid')
+    //   .update({ Status: 'Repaid' })
+    //   .eq('LoanID', selectedLoan.LoanID);
 
-    console.log('Market owner fee updated in database.', feeUpdateData);
+    // if (feeUpdateError) throw new Error('Failed to update market owner fee in Supabase.');
+
+    // console.log('Market owner fee updated in database.', feeUpdateData);
 
     setLoading(false); // End loading state
   } catch (error) {
@@ -189,7 +133,9 @@ const repayFullAmount = async (repayLoan) => {
 };
 
 
+const repayCustomAmount = async () => {}
 
+const repayMinimumAmount = async () => {}
 
 
 
@@ -251,13 +197,13 @@ const repayFullAmount = async (repayLoan) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => { handleClose(); repayFullAmount(selectedLoan); }} disableRipple>
+        <MenuItem onClick={() => { handleClose(); repayFullAmount(); }} disableRipple>
           Full Repay
         </MenuItem>
-        <MenuItem onClick={() => { handleClose(); repayCustomAmount(selectedLoan); }} disableRipple>
+        <MenuItem onClick={() => { handleClose(); repayCustomAmount(); }} disableRipple>
           Custom Repay
         </MenuItem>
-        <MenuItem onClick={() => { handleClose(); repayMinimumAmount(selectedLoan); }} disableRipple>
+        <MenuItem onClick={() => { handleClose(); repayMinimumAmount(); }} disableRipple>
           Minimum Repay
         </MenuItem>
       </StyledMenu>
