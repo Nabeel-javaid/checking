@@ -48,26 +48,34 @@ const ContactSection = () => {
         <div className="row">
           <div className="col-lg-5 d-flex align-items-stretch">
             <div className="info">
-            <div className="email">
-          <img src={EnvelopeIcon} alt="Email" style={{ width: '1.5em', height: '1.5em' }} />
-          <h4>Email:</h4>
-          <p>nabeeljaved944@gmail.com</p>
-        </div>
-        <div className="telegram">
-          <img src={TelegramIcon} alt="Telegram" style={{ width: '1.5em', height: '1.5em', color: 'skyblue' }} />
-          <h4>Telegram:</h4>
-          <p>@code4renawarden</p>
-        </div>
-        <div className="github">
-          <img src={GithubIcon} alt="GitHub" style={{ width: '1.5em', height: '1.5em' }} />
-          <h4>GitHub:</h4>
-          <p>@Nabeel-javaid</p>
-        </div>
-        <div className="discord">
-          <img src={DiscordIcon} alt="Discord" style={{ width: '1.5em', height: '1.5em' }} />
-          <h4>Discord:</h4>
-          <p>0xepley</p>
-        </div>
+              <div className="email" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', columnGap: '0.5em', marginBottom: '1em', marginTop: '1em' }}>
+                <img src={EnvelopeIcon} alt="Email" style={{ width: '2em', height: '4em' }} />
+                <div>
+                  <h4>Email:</h4>
+                  <p>nabeeljaved944@gmail.com</p>
+                </div>
+              </div>
+              <div className="telegram" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', columnGap: '0.5em', marginBottom: '1em' }}>
+                <img src={TelegramIcon} alt="Telegram" style={{ width: '2em', height: '4em', color: 'skyblue' }} />
+                <div>
+                  <h4>Telegram:</h4>
+                  <p>@code4renawarden</p>
+                </div>
+              </div>
+              <div className="github" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', columnGap: '0.5em', marginBottom: '1em'}}>
+                <img src={GithubIcon} alt="GitHub" style={{ width: '2em', height: '4em' }} />
+                <div>
+                  <h4>GitHub:</h4>
+                  <p>@Nabeel-javaid</p>
+                </div>
+              </div>
+              <div className="discord" style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', columnGap: '0.5em', marginBottom: '1em' }}>
+                <img src={DiscordIcon} alt="Discord" style={{ width: '2em', height: '4em' }} />
+                <div>
+                  <h4>Discord:</h4>
+                  <p>0xepley</p>
+                </div>
+              </div>
             </div>
           </div>
           <div className="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
