@@ -597,29 +597,30 @@ const ViewLoan = () => {
       const fee = feeValue.toString();
       const feeAmount = ethers.utils.parseEther(fee);
       console.log("Fee to send to Market Owner: ", feeAmount, " ethers.");
-      // console.log('Sending Fee to Market Owner...');
-      // const txEthFee = await provider.getSigner().sendTransaction({
-      //   to: marketDetails.owner,
-      //   value: feeAmount,
-      // });
-      // await txEthFee.wait();
-      // console.log('Fee sent successfully to market owner.');
+
+      console.log('Sending Fee to Market Owner...');
+      const txEthFee = await provider.getSigner().sendTransaction({
+        to: marketDetails.owner,
+        value: feeAmount,
+      });
+      await txEthFee.wait();
+      console.log('Fee sent successfully to market owner.');
 
       // // Update the Tax Collected for the market owner
-      // const { data: feeUpdateData, error: feeUpdateError } = await supabase
-      //   .from('Markets')
-      //   .update({ TaxCollected: feeAmount }) // This is pseudo-code; actual syntax will depend on your table structure
-      //   .eq('owner', marketDetails.id); // Assuming `ownerId` is how you link to the specific market owner
+      const { data: feeUpdateData, error: feeUpdateError } = await supabase
+        .from('Markets')
+        .update({ TaxCollected: feeAmount }) // This is pseudo-code; actual syntax will depend on your table structure
+        .eq('owner', marketDetails.id); // Assuming `ownerId` is how you link to the specific market owner
 
       // // Update Loan Status
-      // const { error: updateLoanError } = await supabase
-      //   .from('LoanBid')
-      //   .update({ Status: 'Repaid' })
-      //   .eq('LoanID', loanFee.LoanID);
+      const { error: updateLoanError } = await supabase
+        .from('LoanBid')
+        .update({ Status: 'Repaid' })
+        .eq('LoanID', loanFee.LoanID);
 
-      // if (feeUpdateError) throw new Error('Failed to update market owner fee in Supabase.');
+      if (feeUpdateError) throw new Error('Failed to update market owner fee in Supabase.');
 
-      // console.log('Market owner fee updated in database.', feeUpdateData);
+      console.log('Market owner fee updated in database.', feeUpdateData);
     }
     catch (error) {
       console.error('Failed to send funds:', error);
@@ -811,6 +812,8 @@ const ViewLoan = () => {
       variant="contained"
       color="primary"
       onClick={() => payMarket(selectedLoan)}
+      sx={{ borderRadius: '17px' }} // Custom border radius
+
     >
       Pay Market Fee
     </Button>
@@ -820,6 +823,8 @@ const ViewLoan = () => {
       variant="contained"
       color="primary"
       onClick={() => fetchCollateral(selectedLoan)}
+      sx={{ borderRadius: '17px' }} // Custom border radius
+
     >
       Claim Collateral
     </Button>

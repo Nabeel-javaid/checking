@@ -71,54 +71,55 @@ const repayFullAmount = async () => {
     // Calculate and log the fee to send to Market Owner
     const feePercent = Number(marketDetails.Fee)/100;
     const feeValue = Number(selectedLoan.Principal) * feePercent;
+
     const fee = feeValue.toString();
     const feeAmount = ethers.utils.parseEther(fee);
     console.log("Fee to send to Market Owner: ", feeAmount, " ethers.");
 
     // Repay loan amount to the lender
-    // const ethAmount = ethers.utils.parseEther(selectedLoan.Principal);
+    const ethAmount = ethers.utils.parseEther(selectedLoan.Principal);
 
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-    // console.log('Sending ETH to lender...');
-    // const txEthLender = await provider.getSigner().sendTransaction({
-    //   to: selectedLoan.RecieverAddress,
-    //   value: ethAmount,
-    // });
-    // await txEthLender.wait();
-    // console.log('ETH sent successfully to the lender.');
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    console.log('Sending ETH to lender...');
+    const txEthLender = await provider.getSigner().sendTransaction({
+      to: selectedLoan.RecieverAddress,
+      value: ethAmount,
+    });
+    await txEthLender.wait();
+    console.log('ETH sent successfully to the lender.');
 
     // Update Loan Status and Repaid Value
-    // const { error: updateLoanError } = await supabase
-    //   .from('LoanBid')
-    //   .update({ Status: 'Paying Market', Repaid: selectedLoan.Principal })
-    //   .eq('LoanID', selectedLoan.LoanID);
+    const { error: updateLoanError } = await supabase
+      .from('LoanBid')
+      .update({ Status: 'Paying Market', Repaid: selectedLoan.Principal })
+      .eq('LoanID', selectedLoan.LoanID);
 
-    // if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
+    if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
 
     // // Send fee to market owner
-    // console.log('Sending Fee to Market Owner...');
-    // const txEthFee = await provider.getSigner().sendTransaction({
-    //   to: marketDetails.owner,
-    //   value: feeAmount,
-    // });
-    // await txEthFee.wait();
-    // console.log('Fee sent successfully to market owner.');
+    console.log('Sending Fee to Market Owner...');
+    const txEthFee = await provider.getSigner().sendTransaction({
+      to: marketDetails.owner,
+      value: feeAmount,
+    });
+    await txEthFee.wait();
+    console.log('Fee sent successfully to market owner.');
 
     // Update the Tax Collected for the market owner
-    // const { data: feeUpdateData, error: feeUpdateError } = await supabase
-    //   .from('Markets')
-    //   .update({ TaxCollected: feeAmount }) // This is pseudo-code; actual syntax will depend on your table structure
-    //   .eq('owner', marketDetails.id); // Assuming `ownerId` is how you link to the specific market owner
+    const { data: feeUpdateData, error: feeUpdateError } = await supabase
+      .from('Markets')
+      .update({ TaxCollected: feeAmount }) // This is pseudo-code; actual syntax will depend on your table structure
+      .eq('owner', marketDetails.id); // Assuming `ownerId` is how you link to the specific market owner
 
     // Update Loan Status
-    // const { error: updateLoanError } = await supabase
-    //   .from('LoanBid')
-    //   .update({ Status: 'Repaid' })
-    //   .eq('LoanID', selectedLoan.LoanID);
+    const { error: updateLoanError2 } = await supabase
+      .from('LoanBid')
+      .update({ Status: 'Repaid' })
+      .eq('LoanID', selectedLoan.LoanID);
 
-    // if (feeUpdateError) throw new Error('Failed to update market owner fee in Supabase.');
+    if (updateLoanError2) throw new Error('Failed to update market owner fee in Supabase.');
 
-    // console.log('Market owner fee updated in database.', feeUpdateData);
+    console.log('Market owner fee updated in database.', feeUpdateData);
 
     setLoading(false); // End loading state
   } catch (error) {
