@@ -43,7 +43,7 @@ const ContactSection = () => {
     <section id="contact" className="contact">
       <div className="container" data-aos="fade-up">
         <div className="section-title">
-          <h2>Contact</h2>
+          <h2>Contact Us</h2>
         </div>
         <div className="row">
           <div className="col-lg-5 d-flex align-items-stretch">

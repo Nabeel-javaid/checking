@@ -11,38 +11,38 @@ export default function Footer() {
           <div className="">
             <img src={Logo} alt="LogoFooter" />
           </div>
-          <div className="grid md:col-span-2 xl:col-span-3 md:grid-cols-3 gap-x-4">
+          <div className="grid md:col-span-2 xl:col-span-3 md:grid-cols-3 gap-x-3">
             <ul className="xl:border-r border-lightgray flex flex-col items-start xl:items-center space-y-4 py-4">
               <li>
                 <a href="#" className="text-gray">
-                  Buy Crypto
+                  Home
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray">
-                  Exchanges
+                  Docs
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray">
+                {/* <a href="#" className="text-gray">
                   Watchlist
-                </a>
+                </a> */}
               </li>
               <li>
-                <a href="#" className="text-gray">
+                {/* <a href="#" className="text-gray">
                   Portfolio
-                </a>
+                </a> */}
               </li>
               <li>
-                <a href="#" className="text-gray">
+                {/* <a href="#" className="text-gray">
                   NFT
-                </a>
+                </a> */}
               </li>
             </ul>
             <ul className="xl:border-r border-lightgray flex flex-col items-start xl:items-center space-y-4 py-4">
               <li>
                 <a href="#" className="text-gray">
-                  Products
+                  Markets
                 </a>
               </li>
               <li>
@@ -51,8 +51,25 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray">
+                {/* <a href="#" className="text-gray">
                   Careers
+                </a> */}
+              </li>
+              <li>
+                {/* <a href="#" className="text-gray">
+                  Blog
+                </a> */}
+              </li>
+              <li>
+                {/* <a href="#" className="text-gray">
+                  Security
+                </a> */}
+              </li>
+            </ul>
+            <ul className="xl:border-r border-lightgray flex flex-col items-start xl:items-center space-y-4 py-4">
+              <li>
+                <a href="#" className="text-gray">
+                Careers
                 </a>
               </li>
               <li>
@@ -61,55 +78,38 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray">
-                  Security
-                </a>
-              </li>
-            </ul>
-            <ul className="xl:border-r border-lightgray flex flex-col items-start xl:items-center space-y-4 py-4">
-              <li>
-                <a href="#" className="text-gray">
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray">
-                  Contact Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray">
+                {/* <a href="#" className="text-gray">
                   System Status
-                </a>
+                </a> */}
               </li>
               <li>
-                <a href="#" className="text-gray">
+                {/* <a href="#" className="text-gray">
                   Area of Avaibility
-                </a>
+                </a> */}
               </li>
               <li>
-                <a href="#" className="text-gray">
+                {/* <a href="#" className="text-gray">
                   Privacy Policy
-                </a>
+                </a> */}
               </li>
             </ul>
           </div>
           <div className="md:col-span-2 xl:col-span-1 space-y-4">
-            <h4 className="text-lg text-gray">Newsletter</h4>
-            <p>Never miss anything crypto when you're on the go</p>
+            {/* <h4 className="text-lg text-gray">Newsletter</h4>
+            <p>Never miss anything crypto when you're on the go</p> */}
             <div className="flex gap-4 my-4">
-              <div>
+              {/* { <div>
                 <input
                   type="email"
                   className="border border-lightgray rounded-xl p-4 outline-none focus:border-primary w-full"
                   placeholder="Enter your email"
                 />
-              </div>
-              <div>
+              </div> } */}
+              {/* <div>
                 <PrimaryButton className="!px-5 aspect-square !rounded-md">
                   <BsArrowRight color="white" />
                 </PrimaryButton>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

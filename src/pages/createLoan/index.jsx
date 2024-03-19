@@ -137,6 +137,7 @@ function CreateLoan() {
         const accountAddress = await signer.getAddress();
 
         const nfts = await alchemy.nft.getNftsForOwner(accountAddress);
+        console.log("NFTs: ", nfts);
 
         setUserNFTs(nfts.ownedNfts);
         setLoading(false);

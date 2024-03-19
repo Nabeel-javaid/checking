@@ -746,7 +746,7 @@ const ViewLoan = () => {
             <hr style={{ margin: '16px 0', borderColor: '#5f5f5f' }} />
 
             {/* Lender Details */}
-            <DialogTitle style={{ background: '#4f4f4f', color: 'white' }}>Lender Details</DialogTitle>
+            <DialogTitle style={{ background: '#4f4f4f', color: 'white', borderRadius: '20px'}}>Lender Details</DialogTitle>
             <DialogContent className={classes.dialog} dividers style={{ background: '#272727', color: 'white' }}>
               {selectedLoan.LenderAddress === null ? (
                 <Typography variant="h5">Not yet accepted</Typography>
