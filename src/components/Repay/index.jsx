@@ -146,15 +146,39 @@ const repayMinimumAmount = async () => {
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     console.log('Sending ETH to lender...');
-    const txEthLender = await provider.getSigner().sendTransaction({
-      to: selectedLoan.RecieverAddress,
-      value: twentyFivePercent,
-    });
-    await txEthLender.wait();
+    // const txEthLender = await provider.getSigner().sendTransaction({
+    //   to: selectedLoan.RecieverAddress,
+    //   value: twentyFivePercent,
+    // });
+    // await txEthLender.wait();
     console.log('ETH sent successfully to the lender.');
    //time update nahi ho ga, wohi rahay ga, but status update ho ga (maybe) aur new status "Partially Repaid" ho ga
    //new coloumn banay ga "Partially Repaid Amount" aur uss main 25% amount save ho ga
    //if fully paid then market owner ko fee jay gi, otherwise nahi jay gi
+   console.log(selectedLoan.PartialPayment);
+    let payment = Number(selectedLoan.PartialPayment);
+    let pay = payment + 25;//Add custom/minimum amount paid
+    let newPayment = pay.toString();
+    let statusUp = newPayment + '% Repaid';
+
+   if (pay < 100) {
+    const { error: updateLoanError } = await supabase
+      .from('LoanBid')
+      .update({ Status: statusUp, PartialPayment: newPayment })
+      .eq('LoanID', selectedLoan.LoanID);
+
+    if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
+   }
+
+   else if (pay === 100) {
+    const { error: updateLoanError } = await supabase
+      .from('LoanBid')
+      .update({ Status: 'Repaid', PartialPayment: newPayment })
+      .eq('LoanID', selectedLoan.LoanID);
+
+    if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
+   }
+
 
     setLoading(false); // End loading state
   } catch (error) {

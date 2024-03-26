@@ -829,7 +829,7 @@ const ViewLoan = () => {
       Claim Collateral
     </Button>
   )}
-  {selectedLoan?.BorrowerAddress === currentAccountAddress && selectedLoan?.Status.toLowerCase() === 'accepted' && (
+  {selectedLoan?.BorrowerAddress === currentAccountAddress && (selectedLoan?.Status.toLowerCase() === 'accepted' || selectedLoan?.Status.includes('% Repaid')) && (
     <>
       <Repay selectedLoan={selectedLoan} marketDetails={marketDetails} />
     </>
