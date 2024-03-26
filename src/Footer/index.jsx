@@ -1,7 +1,5 @@
 import React from "react";
 import Logo from "../images/logo.svg";
-import { BsArrowRight } from "react-icons/bs";
-import PrimaryButton from "../components/buttons/PrimaryButton";
 
 export default function Footer() {
   return (
