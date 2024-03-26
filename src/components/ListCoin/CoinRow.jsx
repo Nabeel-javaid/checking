@@ -9,7 +9,8 @@ export default function CoinRow({ image, coinName, coinPrice, coinUpTrend }) {
           src={image}
           alt={coinName}
           className="imline h-[1em] mr-2"
-          draggable="false"trending
+          // draggable="false"trending
+          draggable="false"
         />
         {coinName}
       </div>

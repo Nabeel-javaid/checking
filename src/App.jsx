@@ -30,7 +30,7 @@ function App() {
           <Route path="/market/:id" element={<MarketData />} />
           <Route path="/create-loan/:market" element={<CreateLoan/>}/>
 
-//help
+{/* //help */}
 
           {/* <Route path="/aboutus" element={<Aboutus />} /> */}
           

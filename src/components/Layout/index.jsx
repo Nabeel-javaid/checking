@@ -5,7 +5,7 @@ export default function Layout({ children }) {
   return (
     <div className="">
       <header>
-        <Navbar />
+        {/* <Navbar /> */}
       </header>
       <main className="overflow-hidden">{children}</main>
     </div>
