@@ -131,7 +131,38 @@ const repayFullAmount = async () => {
 
 const repayCustomAmount = async () => {}
 
-const repayMinimumAmount = async () => {}
+const repayMinimumAmount = async () => {
+
+  setLoading(true); // Begin loading state
+
+  try {
+
+    // Assuming selectedLoan.CollateralAmount contains the total collateral amount
+    const collateralAmount = selectedLoan.CollateralAmount;
+    const twentyFivePercent = 0.25 * collateralAmount;
+
+    console.log('Repaying 25% of the loan amount to the lender...', twentyFivePercent);
+
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    console.log('Sending ETH to lender...');
+    const txEthLender = await provider.getSigner().sendTransaction({
+      to: selectedLoan.RecieverAddress,
+      value: twentyFivePercent,
+    });
+    await txEthLender.wait();
+    console.log('ETH sent successfully to the lender.');
+   //time update nahi ho ga, wohi rahay ga, but status update ho ga (maybe) aur new status "Partially Repaid" ho ga
+   //new coloumn banay ga "Partially Repaid Amount" aur uss main 25% amount save ho ga
+   //if fully paid then market owner ko fee jay gi, otherwise nahi jay gi
+
+    setLoading(false); // End loading state
+  } catch (error) {
+    console.error('Error during repayment process:', error);
+    setLoading(false); // Ensure loading is always reset
+  }
+
+}
 
 
 
