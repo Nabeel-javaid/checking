@@ -1,0 +1,18 @@
+
+
+   
+        
+
+
+        .browse-markets {
+            display: flex; /* Use flexbox for layout */
+            justify-content: center; /* Center text horizontally */
+            align-items: center; /* Align content vertically within the heading */
+            color: black; /* Set text color */
+          
+            white-space: nowrap;
+          }
+          
+          .browse-markets strong {
+            margin-right: 5px; /* Add margin between "Browse the" and "Markets" */
+          }

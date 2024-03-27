@@ -9,6 +9,7 @@ import { ethers } from "ethers";
 import ScaleLoader from 'react-spinners/ScaleLoader';
 import { Alchemy, Network } from "alchemy-sdk";
 import Footer from "../../Footer"
+import "../Profile/profile.css"
 
 
 const supabaseUrl = "https://lmsbzqlwsedldqxqwzlv.supabase.co"
@@ -208,7 +209,7 @@ const UserProfile = () => {
                   height: '100px'
                 }}
               />
-              <Typography variant="h6" style={{ color: 'white', marginBottom: '1rem' }}>
+              <Typography variant="h6" className='owner' style={{ color: 'white', marginBottom: '1rem' }}>
                 <strong>Owner: {ownerAddress || walletAddress}</strong>
               </Typography>
 

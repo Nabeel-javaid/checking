@@ -1,0 +1,12 @@
+@media (min-width: 674px) {
+    .owner {
+    font-size: clamp(30px, 2vw, 100px); 
+    }
+
+    }
+
+@media (min-width: 460px) {
+        .owner {
+        font-size: clamp(17px, 2vw, 70px); 
+        }
+      }
