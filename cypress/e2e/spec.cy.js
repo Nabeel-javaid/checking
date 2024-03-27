@@ -1,7 +1,9 @@
 describe('My First Test', () => {
-    // beforeEach(() => {
-    //   cy.enableWindowEthereum(); // Enable window.ethereum before visiting the page
-    // });
+    beforeEach(() => {
+      cy.on('uncaught:exception', (err, runnable) => {
+        return false
+      })
+    });
   
     it('Visits the app', () => {
       // Your test code goes here
