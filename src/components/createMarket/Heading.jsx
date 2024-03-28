@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import Typography from "@mui/material/Typography";
+import {Typography} from "@mui/material/Typography";
 
 const Heading = () => {
   const [heading, setHeading] = useState("RULES");

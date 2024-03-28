@@ -6,6 +6,9 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
+    optimizeDeps: {
+      include: ['@emotion/react', '@emotion/styled', '@mui/icons-material', 'lodash','@mui/material/Tooltip', '@mui/material']
+    },
     alias: [
       {
         find: "@",
@@ -13,6 +16,7 @@ export default defineConfig({
       },
     ],
   },
+  
   define: {
         "process.env": {},
       },

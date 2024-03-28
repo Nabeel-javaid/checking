@@ -48,7 +48,7 @@ export default function Navbar() {
 
   return (
     <ThirdwebProvider
-      activeChain="goerli"
+      // activeChain="sepolia"
       clientId="a3aade80daf0ec081979b0bb1ddf3f1c"
       // locale={en()}
       supportedWallets={[

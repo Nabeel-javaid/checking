@@ -11,7 +11,7 @@ import Web3 from 'web3';
 import animationData from '../../ABIs/store/LottieAnimation.json';
 import Lottie from "lottie-react";
 import { Alchemy, Network } from "alchemy-sdk";
-import ListItemIcon from '@mui/material/ListItemIcon';
+import { ListItemIcon } from '@mui/material';
 import COINS_LIST from '../../ABIs/store/uniswap.json';
 import { createClient } from '@supabase/supabase-js';
 
