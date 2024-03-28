@@ -867,6 +867,7 @@ const ViewLoan = () => {
         to: marketDetails.owner,
         value: feeAmount,
       });
+      //@audit
       await txEthFee.wait();
       console.log("Fee sent successfully to market owner.");
 
@@ -958,6 +959,8 @@ const ViewLoan = () => {
     }
   };
 
+  const tokenPrice = Math.floor(Math.random() * 100) + 1;
+
   // loan card when u click on them, this is responsive already
   const renderLoanDetailsDialog = () => (
     <Dialog
@@ -970,6 +973,7 @@ const ViewLoan = () => {
       <DialogTitle style={{ background: "#4f4f4f", color: "white" }}>
         Loan Details
       </DialogTitle>
+      
       <DialogContent
         className={classes.dialog}
         dividers
@@ -995,32 +999,34 @@ const ViewLoan = () => {
             </div>
 
             {/* Loan Details */}
+            
             <Typography variant="body1">
-              <strong>Receiver Address:</strong> {selectedLoan.RecieverAddress}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Borrower Address:</strong> {selectedLoan.BorrowerAddress}
-            </Typography>
-            <Typography variant="body1">
-              <strong>APR:</strong> {selectedLoan.APR}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Duration:</strong> {selectedLoan.Duration}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Principal:</strong> {selectedLoan.Principal}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Collateral Type:</strong> {selectedLoan.CollateralType}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Collateral Amount:</strong>{" "}
-              {selectedLoan.CollateralAmount}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Collateral Address:</strong>{" "}
-              {selectedLoan.CollateralAddress}
-            </Typography>
+        <strong>Receiver Address:</strong> {selectedLoan.RecieverAddress}
+      </Typography>
+      <Typography variant="body1">
+        <strong>Borrower Address:</strong> {selectedLoan.BorrowerAddress}
+      </Typography>
+      <Typography variant="body1">
+        <strong>APR:</strong> {selectedLoan.APR}
+      </Typography>
+      <Typography variant="body1">
+        <strong>Duration:</strong> {selectedLoan.Duration}
+      </Typography>
+      <Typography variant="body1">
+        <strong>Principal:</strong> {selectedLoan.Principal}
+      </Typography>
+      <Typography variant="body1">
+        <strong>Collateral Type:</strong> {selectedLoan.CollateralType}
+      </Typography>
+      <Typography variant="body1">
+        <strong>Collateral Amount:</strong> {selectedLoan.CollateralAmount}
+      </Typography>
+      <Typography variant="body1">
+        <strong>Collateral Address:</strong> {selectedLoan.CollateralAddress}
+      </Typography>
+      <Typography variant="body1">
+        <strong>Collateral Token Price:</strong> ~ {tokenPrice} USD
+      </Typography>
 
             {/* Divider */}
             <hr style={{ margin: "16px 0", borderColor: "#5f5f5f" }} />

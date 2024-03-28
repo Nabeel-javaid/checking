@@ -203,12 +203,13 @@ const repayCustomAmount = async () => {
     } else if (payPercentage >= 100) { // Use >= to catch overpayments as full repayment
       const { error: updateLoanError } = await supabase
         .from('LoanBid')
-        .update({ Status: 'Paying Market', PartialPayment: '100' }) // Set to 100% if overpaid
+        .update({ Status: 'Paying Market', PartialPayment: '100', Repaid: customAmount }) // Set to 100% if overpaid
         .eq('LoanID', selectedLoan.LoanID);
 
       if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
     }
 
+  
     setLoading(false); // End loading state
   } catch (error) {
     console.error('Error during custom repayment process:', error);
@@ -256,6 +257,7 @@ const repayMinimumAmount = async () => {
       to: selectedLoan.RecieverAddress,
       value: ethers.utils.parseEther(twentyFivePercent.toString()), // Convert ETH to Wei
     });
+    
     await txEthLender.wait();
     console.log('ETH sent successfully to the lender.');
    console.log(selectedLoan.PartialPayment);
@@ -279,7 +281,7 @@ const repayMinimumAmount = async () => {
    else if (pay === 100) {
     const { error: updateLoanError } = await supabase
       .from('LoanBid')
-      .update({ Status: 'Paying Market', PartialPayment: newPayment })
+      .update({ Status: 'Paying Market', PartialPayment: newPayment, Repaid: twentyFivePercent})
       .eq('LoanID', selectedLoan.LoanID);
 
     if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
