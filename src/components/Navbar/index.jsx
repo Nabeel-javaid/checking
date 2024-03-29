@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import classNames from "classnames";
 import { BsList, BsX } from "react-icons/bs";
-import Logo from "../../images/logo.svg";
+import Logo from "../../images/logo2.svg";
 import Menus from "./Menus";
 
 // Importing ThirdwebProvider and ConnectWallet
@@ -81,7 +81,7 @@ export default function Navbar() {
         )}
       >
         <div className="container top-0 flex items-center justify-between px-4 mx-auto">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center" style={{ paddingLeft: '1rem'}}>
             <img src={Logo} className="mr-6" alt="Neva" />
           </div>
 
