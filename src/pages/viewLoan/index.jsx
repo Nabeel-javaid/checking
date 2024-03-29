@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { createClient } from "@supabase/supabase-js";
 import { useParams } from "react-router-dom";
+import Footer from "../../Footer";
+
 import {
   Button,
   Paper,
@@ -1306,6 +1308,8 @@ const ViewLoan = () => {
           style={{ width: "100%", height: "30rem", paddingTop: "10%" }}
         ></iframe>
       )}
+      <Footer/>
+
     </Layout>
   );
 };
