@@ -11,6 +11,7 @@ import { createClient } from '@supabase/supabase-js';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { ethers } from 'ethers';
+import { toast } from 'react-toastify';
 
 const supabaseUrl = "https://lmsbzqlwsedldqxqwzlv.supabase.co"
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxtc2J6cWx3c2VkbGRxeHF3emx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc5ODA2MTEsImV4cCI6MjAxMzU1NjYxMX0.-qVOdECSW9hfokq8N99gCH2BZYpWooXy7zOz1e6fBHM"
@@ -100,7 +101,7 @@ const repayFullAmount = async () => {
     // Update Loan Status and Repaid Value
     const { error: updateLoanError } = await supabase
       .from('LoanBid')
-      .update({ Status: 'Paying Market', Repaid: selectedLoan.Principal })
+      .update({ Status: 'Paying Market', Repaid: selectedLoan.collateralAmount })
       .eq('LoanID', selectedLoan.LoanID);
 
     if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
@@ -123,7 +124,7 @@ const repayFullAmount = async () => {
     // Update Loan Status
     const { error: updateLoanError2 } = await supabase
       .from('LoanBid')
-      .update({ Status: 'Repaid' })
+      .update({ Status: 'Repaid', PartialPayment: '100', Repaid: selectedLoan.CollateralAmount})
       .eq('LoanID', selectedLoan.LoanID);
 
     if (updateLoanError2) throw new Error('Failed to update market owner fee in Supabase.');
@@ -131,10 +132,12 @@ const repayFullAmount = async () => {
     console.log('Market owner fee updated in database.', feeUpdateData);
 
     setLoading(false); // End loading state
+    toast.success('Loan Fully Repaid successfully!');
     onRepaymentFinished();
   } catch (error) {
     console.error('Error during repayment process:', error);
     setLoading(false); // Ensure loading is always reset
+    toast.error('Failed to repay loan. Please try again later.');
   }
 };
 
@@ -185,10 +188,11 @@ const repayCustomAmount = async () => {
     });
     await txEthLender.wait();
     console.log('ETH sent successfully to the lender.');
+    toast.success('Repayment successful!');
 
     let payment = Number(selectedLoan.PartialPayment);
     console.log("payment", payment);
-    let payPercentage = (payment + customAmount)/collateralAmount *100 // Calculate new payment percentage
+    let payPercentage = payment + ((customAmount)/collateralAmount *100) // Calculate new payment percentage
 
     let newPayment = payPercentage.toString();
     console.log("new payment", newPayment)
@@ -197,7 +201,7 @@ const repayCustomAmount = async () => {
     if (payPercentage < 100) {
       const { error: updateLoanError } = await supabase
         .from('LoanBid')
-        .update({ Status: statusUp, PartialPayment: newPayment })
+        .update({ Status: statusUp, PartialPayment: newPayment, Repaid: customAmount })
         .eq('LoanID', selectedLoan.LoanID);
 
       if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
@@ -212,10 +216,12 @@ const repayCustomAmount = async () => {
 
   
     setLoading(false); // End loading state
+    toast.success('Loan Custom Amount Repaid successfully!');
     onRepaymentFinished();
   } catch (error) {
     console.error('Error during custom repayment process:', error);
     setLoading(false); // Ensure loading is always reset
+    toast.error('Failed to repay loan. Please try again later.');
   }
 }
 
@@ -291,10 +297,12 @@ const repayMinimumAmount = async () => {
 
 
     setLoading(false); // End loading state
+    toast.success('Loan Minimum Amount Repaid successfully!');
     onRepaymentFinished();
   } catch (error) {
     console.error('Error during repayment process:', error);
     setLoading(false); // Ensure loading is always reset
+    toast.error('Failed to repay loan. Please try again later.');
   }
 
 }

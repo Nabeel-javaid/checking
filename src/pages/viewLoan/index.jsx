@@ -147,11 +147,12 @@ const ViewLoan = () => {
 
       const accountAddress = await signer.getAddress();
       const nfts = await alchemy.nft.getNftsForOwner(accountAddress);
-      console.log("NFTs: ", nfts);
+      // console.log("NFTs: ", nfts);
     }
 
     loadLoans();
-    fetchPrice();
+    // fetchPrice();
+    
   }, [MID.market, loansData]);
 
   const loanImages = [
@@ -179,6 +180,7 @@ const ViewLoan = () => {
       setDialogOpen(false);
       console.log(selLoan);
 
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contractAddress = "0x53c1f38ad0e8c6c3589abb6707ddd50d98022021";
       const contract = new ethers.Contract(
@@ -196,6 +198,11 @@ const ViewLoan = () => {
 
       const transactionResponse = await contract.withdrawETH(ethAmount);
       await transactionResponse.wait();
+
+      const { error: updateLoanError } = await supabase
+      .from('LoanBid')
+      .update({ Status: 'Completed' })
+      .eq('LoanID', selectedLoan.LoanID);
 
       console.log("Funds transferred successfully");
       toast.success("Collateral Claimed successfully");
@@ -455,7 +462,7 @@ const ViewLoan = () => {
 
       if (window.ethereum) {
         await window.ethereum.enable();
-        // const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
 
         const selectedLoan = loansData.find((loan) => loan.LoanID === loanID);
@@ -867,12 +874,13 @@ const ViewLoan = () => {
   useEffect(() => {
     const fetchAccountAddress = async () => {
       if (window.ethereum) {
-        // const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const accountAddress = await signer.getAddress();
 
         console.log("Account Address:", accountAddress);
         setCurrentAccountAddress(accountAddress);
+        console.log("checkinggggg" , currentAccountAddress)
       }
     };
 
@@ -911,7 +919,9 @@ const ViewLoan = () => {
       if (feeUpdateError)
         throw new Error("Failed to update market owner fee in Supabase.");
 
-      console.log("Market owner fee updated in database.", feeUpdateData);
+      console.log("Market owner fee updated in backend.", feeUpdateData);
+      handleCloseDialog();
+
     } catch (error) {
       console.error("Failed to send funds:", error);
       toast.error(`Error paying market fee`);
@@ -1133,10 +1143,12 @@ const ViewLoan = () => {
               Accept Loan Bid
             </Button>
           )}
+          {/* {console.log("Ver: ", selectedLoan?.BorrowerAddress, " === ", currentAccountAddress)} */}
         {selectedLoan?.Status === "Accepted" &&
           selectedLoan?.BorrowerAddress !== currentAccountAddress && (
             <Button
               variant="contained"
+              borderRadius= "15px"
               color="primary"
               onClick={() => liquidateLoan(selectedLoan?.LoanID)}
               disabled={!isLiquidateEnabled(selectedLoan)}

@@ -119,36 +119,38 @@ const MarketData = () => {
         await loadMarketDetails(marketID);
       } catch (error) {
         console.error('Error loading market details:', error);
-        toast.error('Error loading blockchain data. Please try again.'); // Display error toast
+        // toast.error('Error loading blockchain data. Please try again.'); // Display error toast
       } finally {
         setLoading(false);
       }
     };
 
-    loadBlockchainData();
-  }, [marketID]);
-
-  const loadMarketDetails = async (marketID) => {
-    try {
-      const { data: Market, error } = await supabase
-        .from('Markets')
-        .select('*')
-        .eq('id', marketID);
-
-      if (error) {
-        console.error('Error loading data from Supabase:', error);
-        toast.error('Error loading data. Please try again.'); // Display error toast
-      } else if (Market && Market.length > 0) {
-        setMarketDetails(Market[0]);
-      } else {
-        console.warn('No market details found for ID:', marketID);
-        toast.warn('No market details found.'); // Display warning toast
+    const loadMarketDetails = async (marketID) => {
+      try {
+        const { data: Market, error } = await supabase
+          .from('Markets')
+          .select('*')
+          .eq('id', marketID);
+  
+        if (error) {
+          console.error('Error loading data from Supabase:', error);
+          toast.error('Error loading data. Please try again.'); // Display error toast
+        } else if (Market && Market.length > 0) {
+          setMarketDetails(Market[0]);
+          console.log("market details", Market[0])
+        } else {
+          console.warn('No market details found for ID:', marketID);
+          toast.warn('No market details found.'); // Display warning toast
+        }
+      } catch (error) {
+        console.error('Unexpected error while loading market details:', error);
+        toast.error('Unexpected error. Please try again.'); // Display error toast
       }
-    } catch (error) {
-      console.error('Unexpected error while loading market details:', error);
-      toast.error('Unexpected error. Please try again.'); // Display error toast
-    }
-  };
+    };
+
+    loadBlockchainData();
+    loadMarketDetails(marketID);
+  }, [marketID]);
 
   if (loading) {
     return (
@@ -169,7 +171,7 @@ const MarketData = () => {
     );
   }
 
-  if (!marketDetails || !marketData) {
+  if (!marketDetails) {
     return (
       <Layout>
         <Container>
@@ -179,7 +181,7 @@ const MarketData = () => {
             alignItems="center"
             style={{ height: '80vh' }}
           >
-            <Typography variant="h4">No Data Found</Typography>
+            <Typography variant="h4"></Typography>
           </Grid>
         </Container>
       </Layout>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import classNames from "classnames";
 import { BsList, BsX } from "react-icons/bs";
-import Logo from "../../images/logo.svg";
+import Logo from "../../images/logo2.svg";
 import Menus from "./Menus";
 
 // Importing ThirdwebProvider and ConnectWallet
