@@ -21,7 +21,7 @@ import {
     DialogActions,
     Typography,
 } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
+import { Tooltip } from '@mui/material';
 import InfoIcon from "@mui/icons-material/Info";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Layout from "../../components/Layout";

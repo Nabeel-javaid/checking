@@ -1,6 +1,6 @@
 import React from 'react';
-import MUIButton from '@mui/material/Button';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { MUIButton } from '@mui/material';
+import {ArrowBackIcon} from '@mui/icons-material';
 
 const BackButton = ({ handleBack }) => {
     return (
