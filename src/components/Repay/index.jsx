@@ -53,7 +53,7 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function Repay({ selectedLoan, marketDetails }) {
+export default function Repay({ selectedLoan, marketDetails, onRepaymentFinished }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = useState(false); // Use useState correctly here
 
@@ -76,16 +76,10 @@ const repayFullAmount = async () => {
 
     const paid = Number(selectedLoan.PartialPayment);
     const remaining = (100 - paid)/100
-<<<<<<< HEAD
-
-    const fee = (remaining * Number(selectedLoan.Principal) ) + feeValue;
-    const feeAmount = ethers.utils.parseEther(fee.toString());
-=======
     // const fee = feeValue * 
 
     // console.log("fee", fee);
     const feeAmount = ethers.utils.parseEther(feeValue.toString());
->>>>>>> 155f729445168cf943b0870fb516a98d07521934
     console.log("Fee to send to Market Owner: ", feeAmount, " ethers.");
 
     // Repay loan amount to the lender
@@ -137,6 +131,7 @@ const repayFullAmount = async () => {
     console.log('Market owner fee updated in database.', feeUpdateData);
 
     setLoading(false); // End loading state
+    onRepaymentFinished();
   } catch (error) {
     console.error('Error during repayment process:', error);
     setLoading(false); // Ensure loading is always reset
@@ -170,29 +165,17 @@ const repayCustomAmount = async () => {
     const twentyFivePercent = 0.25 * collateralAmount;
 
     // Prompt user for custom payment amount
-<<<<<<< HEAD
-    let customAmount = prompt(Enter the amount of ETH you wish to repay. It should not be less than ${twentyFivePercent} ETH and not more than ${collateralAmount} ETH.);
-=======
     let customAmount = prompt(`Enter the amount of ETH you wish to repay. It should not be less than ${twentyFivePercent} ETH and not more than ${collateralAmount} ETH.`);
->>>>>>> 155f729445168cf943b0870fb516a98d07521934
 
     // Convert string input to number and validate
     customAmount = Number(customAmount);
     if (isNaN(customAmount) || customAmount < twentyFivePercent || customAmount > collateralAmount) {
-<<<<<<< HEAD
-      alert(Invalid amount. Please enter a value between ${twentyFivePercent} and ${collateralAmount}.);
-=======
       alert(`Invalid amount. Please enter a value between ${twentyFivePercent} and ${collateralAmount}.`);
->>>>>>> 155f729445168cf943b0870fb516a98d07521934
       setLoading(false);
       return;
     }
 
-<<<<<<< HEAD
-    console.log(Repaying custom amount to the lender: ${customAmount} ETH);
-=======
     console.log(`Repaying custom amount to the lender: ${customAmount} ETH`);
->>>>>>> 155f729445168cf943b0870fb516a98d07521934
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     console.log('Sending ETH to lender...');
@@ -221,21 +204,15 @@ const repayCustomAmount = async () => {
     } else if (payPercentage >= 100) { // Use >= to catch overpayments as full repayment
       const { error: updateLoanError } = await supabase
         .from('LoanBid')
-<<<<<<< HEAD
-        .update({ Status: 'Paying Market', PartialPayment: '100' }) // Set to 100% if overpaid
-=======
         .update({ Status: 'Paying Market', PartialPayment: '100', Repaid: customAmount }) // Set to 100% if overpaid
->>>>>>> 155f729445168cf943b0870fb516a98d07521934
         .eq('LoanID', selectedLoan.LoanID);
 
       if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
     }
 
-<<<<<<< HEAD
-=======
   
->>>>>>> 155f729445168cf943b0870fb516a98d07521934
     setLoading(false); // End loading state
+    onRepaymentFinished();
   } catch (error) {
     console.error('Error during custom repayment process:', error);
     setLoading(false); // Ensure loading is always reset
@@ -280,29 +257,18 @@ const repayMinimumAmount = async () => {
     console.log('Sending ETH to lender...');
     const txEthLender = await provider.getSigner().sendTransaction({
       to: selectedLoan.RecieverAddress,
-<<<<<<< HEAD
-      value: twentyFivePercent,
-    });
-=======
       value: ethers.utils.parseEther(twentyFivePercent.toString()), // Convert ETH to Wei
     });
     
->>>>>>> 155f729445168cf943b0870fb516a98d07521934
     await txEthLender.wait();
     console.log('ETH sent successfully to the lender.');
    console.log(selectedLoan.PartialPayment);
     let payment = Number(selectedLoan.PartialPayment);
 
-<<<<<<< HEAD
-    let pay = payment + twentyFivePercent;//Add custom/minimum amount paid
-    let paying = pay/collateralAmount * 100; // Calculate new payment percentage
-    let newPayment = paying.toString();
-=======
     // let paid = 
     let pay = (payment + 25);  //Add custom/minimum amount paid
     // let paying = pay*collateralAmount; // Calculate new payment percentage
     let newPayment = pay.toString();
->>>>>>> 155f729445168cf943b0870fb516a98d07521934
     let statusUp = newPayment + '% Repaid';
 
    if (pay < 100) {
@@ -317,11 +283,7 @@ const repayMinimumAmount = async () => {
    else if (pay === 100) {
     const { error: updateLoanError } = await supabase
       .from('LoanBid')
-<<<<<<< HEAD
-      .update({ Status: 'Paying Market', PartialPayment: newPayment })
-=======
       .update({ Status: 'Paying Market', PartialPayment: newPayment, Repaid: twentyFivePercent})
->>>>>>> 155f729445168cf943b0870fb516a98d07521934
       .eq('LoanID', selectedLoan.LoanID);
 
     if (updateLoanError) throw new Error('Failed to update loan status in Supabase.');
@@ -329,6 +291,7 @@ const repayMinimumAmount = async () => {
 
 
     setLoading(false); // End loading state
+    onRepaymentFinished();
   } catch (error) {
     console.error('Error during repayment process:', error);
     setLoading(false); // Ensure loading is always reset

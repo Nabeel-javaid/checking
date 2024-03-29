@@ -15,6 +15,7 @@ import {
 import { styled as makeStyles } from "@mui/system";
 import Pagination from "@mui/material/Pagination";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import { Alchemy, Network } from "alchemy-sdk";
 // import '../css/main.css';
 import { ethers } from "ethers";
 import { toast, ToastContainer } from "react-toastify";
@@ -92,6 +93,13 @@ const ViewLoan = () => {
   const isLargeScreen = useMediaQuery("(min-width: 1000px)");
   const loansPerPage = 9;
   const MID = useParams();
+  const [provider, setProvider] = useState(null);
+
+  const config = {
+    apiKey: "owPQ3CAm4xkJ7gukesUl4w7iqUpNHVIb",
+    network: Network.ETH_MAINNET,
+  };
+  const alchemy = new Alchemy(config);
 
   useEffect(() => {
     const loadMarketDetails = async (marketID) => {
@@ -130,8 +138,19 @@ const ViewLoan = () => {
       }
     };
 
+    const fetchPrice = async () => {
+      const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
+      setProvider(web3Provider);
+      const signer = provider.getSigner();
+
+      const accountAddress = await signer.getAddress();
+      const nfts = await alchemy.nft.getNftsForOwner(accountAddress);
+      console.log("NFTs: ", nfts);
+    }
+
     loadLoans();
-  }, [MID.market]);
+    fetchPrice();
+  }, [MID.market, loansData]);
 
   const loanImages = [
     "https://i.ibb.co/CzzXqK6/7xm-xyz648911.png",
@@ -494,6 +513,7 @@ const ViewLoan = () => {
         toast.error("MetaMask not detected");
         setAcceptingLoan(false); // Set loading state to false in case of an error
       }
+      handleCloseDialog();
     } catch (error) {
       toast.error(`Error accepting loan`);
       setAcceptingLoan(false); // Set loading state to false in case of an error
@@ -509,6 +529,8 @@ const ViewLoan = () => {
   const currentLoans = loansData.slice(indexOfFirstLoan, indexOfLastLoan);
 
   const totalPages = Math.ceil(loansData.length / loansPerPage);
+
+  
 
   const renderLoans = () => {
     return (
@@ -831,6 +853,7 @@ const ViewLoan = () => {
         toast.error("MetaMask not detected");
         setAcceptingLoan(false); // Set loading state to false in case of an error
       }
+      handleCloseDialog();
     } catch (error) {
       toast.error(`Error while liquidating loan`);
       setAcceptingLoan(false); // Set loading state to false in case of an error
@@ -953,13 +976,21 @@ const ViewLoan = () => {
         toast.error("MetaMask not detected");
         setAcceptingLoan(false); // Set loading state to false in case of an error
       }
+      handleCloseDialog();
     } catch (error) {
       toast.error(`Error cancelling loan`);
       setAcceptingLoan(false); // Set loading state to false in case of an error
     }
   };
 
-  const tokenPrice = Math.floor(Math.random() * 100) + 1;
+  // Function to handle repayment finished
+  const handleRepaymentFinished = () => {
+    handleCloseDialog(); // Close the dialog
+  };
+
+  // const tokenPrice = Math.floor(Math.random() * 100) + 1;
+  const [tokenCollateralPrice, setTokenCollateralPrice] = useState(Math.floor(Math.random() * 100) + 1);
+  const [tokenLendingPrice, setTokenLendingPrice] = useState(Math.floor(Math.random() * 100) + 1);
 
   // loan card when u click on them, this is responsive already
   const renderLoanDetailsDialog = () => (
@@ -1004,16 +1035,19 @@ const ViewLoan = () => {
         <strong>Receiver Address:</strong> {selectedLoan.RecieverAddress}
       </Typography>
       <Typography variant="body1">
-        <strong>Borrower Address:</strong> {selectedLoan.BorrowerAddress}
+        <strong>Lending Token Address:</strong> {selectedLoan.LendingTokenAddress}
       </Typography>
       <Typography variant="body1">
-        <strong>APR:</strong> {selectedLoan.APR}
+        <strong>Lending Amount:</strong> {selectedLoan.Principal}
       </Typography>
+      <Typography variant="body1">
+        <strong>Lending Token Price:</strong> ~ {tokenLendingPrice} USD
+      </Typography>
+      {/* <Typography variant="body1">    
+        <strong>APR:</strong> {selectedLoan.APR}
+      </Typography> */}
       <Typography variant="body1">
         <strong>Duration:</strong> {selectedLoan.Duration}
-      </Typography>
-      <Typography variant="body1">
-        <strong>Principal:</strong> {selectedLoan.Principal}
       </Typography>
       <Typography variant="body1">
         <strong>Collateral Type:</strong> {selectedLoan.CollateralType}
@@ -1025,7 +1059,7 @@ const ViewLoan = () => {
         <strong>Collateral Address:</strong> {selectedLoan.CollateralAddress}
       </Typography>
       <Typography variant="body1">
-        <strong>Collateral Token Price:</strong> ~ {tokenPrice} USD
+        <strong>Collateral Token Price:</strong> ~ {tokenCollateralPrice} USD
       </Typography>
 
             {/* Divider */}
@@ -1139,6 +1173,7 @@ const ViewLoan = () => {
               <Repay
                 selectedLoan={selectedLoan}
                 marketDetails={marketDetails}
+                onRepaymentFinished={handleRepaymentFinished}
               />
             </>
           )}
