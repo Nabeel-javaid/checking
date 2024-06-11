@@ -3,9 +3,7 @@ import Layout from "../../components/Layout";
 import FeatureBox from "../../components/viewMarket/FeatureBox";
 import { createClient } from "@supabase/supabase-js";
 import Typography from "@material-ui/core/Typography";
-import { Pagination } from '@mui/material';
-import { Autocomplete } from '@mui/material';
-import { TextField } from '@mui/material';
+import { Pagination, Autocomplete, TextField } from "@mui/material";
 import Footer from "../../Footer";
 import { Box, useMediaQuery } from "@material-ui/core";
 import "../viewMarket/viewmarket.css";
@@ -28,32 +26,28 @@ const ViewMarkets = () => {
 
   useEffect(() => {
     const loadMarketData = async () => {
-      let query = supabase.from("Markets").select("*");
+      try {
+        let query = supabase.from("Markets").select("*");
 
-      if (statusFilter === "Closed") {
-        query = query.eq("isClosed", "True");
-      }
-      if (statusFilter === "Open") {
-        query = query.eq("isClosed", "False");
-      }
+        if (statusFilter) {
+          query = query.eq("isClosed", statusFilter === "Closed");
+        }
 
-      if (assetClassFilter === "Loan") {
-        query = query.eq("Type", "Loan");
-      }
-      if (assetClassFilter === "Wholesale") {
-        query = query.eq("Type", "Wholesale");
-      }
-      if (assetClassFilter === "Asset") {
-        query = query.eq("Type", "Asset");
-      }
+        if (assetClassFilter) {
+          query = query.eq("Type", assetClassFilter);
+        }
 
-      const { data: Markets, error } = await query;
+        const { data: Markets, error } = await query;
 
-      if (error) {
-        setError("Error loading data from blockchain. Please try again later.");
-      } else {
-        setMarketCount(Markets.length);
-        setMarketData(Markets);
+        if (error) {
+          setError("Error loading data from blockchain. Please try again later.");
+        } else {
+          setMarketCount(Markets.length);
+          setMarketData(Markets);
+          setLoading(false);
+        }
+      } catch (err) {
+        setError("An unexpected error occurred. Please try again later.");
         setLoading(false);
       }
     };
@@ -62,7 +56,6 @@ const ViewMarkets = () => {
   }, [statusFilter, assetClassFilter]);
 
   useEffect(() => {
-    // Set the background color when the component mounts
     document.body.style.backgroundColor = "rgba(246,249,255,1)";
   }, []);
 
@@ -73,11 +66,8 @@ const ViewMarkets = () => {
       const marketStatus = selectedMarket.isClosed ? "Closed" : "Open";
 
       if (marketStatus === "Closed") {
-        // Market is closed, display warning alert
         alert("This market is closed and can't be used for trading.");
       } else {
-        // Market is open, navigate to the market page
-        console.log("Open market ", marketID);
         window.location.href = `./market/${marketID}`;
       }
     }
@@ -86,10 +76,7 @@ const ViewMarkets = () => {
   const marketsPerPage = 9;
   const indexOfLastMarket = currentPage * marketsPerPage;
   const indexOfFirstMarket = indexOfLastMarket - marketsPerPage;
-  const currentMarkets = marketData.slice(
-    indexOfFirstMarket,
-    indexOfLastMarket
-  );
+  const currentMarkets = marketData.slice(indexOfFirstMarket, indexOfLastMarket);
 
   const totalPages = Math.ceil(marketData.length / marketsPerPage);
 
@@ -99,13 +86,6 @@ const ViewMarkets = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 100);
   };
-
-  useEffect(() => {
-    return () => {
-      setStatusFilter(null);
-      setAssetClassFilter(null);
-    };
-  }, []);
 
   return (
     <Layout>
@@ -118,16 +98,12 @@ const ViewMarkets = () => {
           alignItems: "center",
         }}
       >
-        <Box 
-          pt={isLargeScreen ? undefined: "5rem"}
-         
-        >
+        <Box pt={isLargeScreen ? undefined : "5rem"}>
           <Typography
             variant="h3"
             className="browse-markets"
             marginTop={isLargeScreen ? "0px" : "50px"}
-            style={{fontSize: isLargeScreen ? "3rem": "1.5rem", }}
-            
+            style={{ fontSize: isLargeScreen ? "3rem" : "1.5rem" }}
           >
             <strong>
               Browse the <span style={{ color: "Red" }}>Markets</span>
@@ -136,92 +112,84 @@ const ViewMarkets = () => {
         </Box>
 
         {/* Filters */}
-        <div
-          style={{
-            display: "flex",
-            visibility: isLargeScreen ? "visible" : "hidden",
-            justifyContent: "flex-end",
-            marginRight: "100%",
-            marginTop: "20%",
-          }}
-        >
-          <Autocomplete
-            options={["Open", "Closed"]}
-            getOptionLabel={(option) => option}
-            value={statusFilter}
-            onChange={(event, newValue) => setStatusFilter(newValue)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Status"
-                variant="outlined"
-                style={{ width: "120px" }}
-              />
-            )}
-          />
-          {/* <Autocomplete
-
-            options={['Loan', 'Wholesale', 'Asset']}
-            getOptionLabel={(option) => option}
-            value={assetClassFilter}
-            onChange={(event, newValue) => setAssetClassFilter(newValue)}
-            renderInput={(params) => (
-              <TextField {...params} label="Market Type" variant="outlined" style={{ width: '140px', height: '0px' }} />
-            )}
-          /> */}
-        </div>
-
-        <div className="feature section">
-          <div className="container">
-            <div className="row">
-              {loading && (
-                <iframe
-                  title="Loading"
-                  src="https://lottie.host/embed/2bb1d9c7-c859-42c3-a978-47b8057e708f/u9sfk3p35s.json"
-                ></iframe>
+        {isLargeScreen && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginRight: "100%",
+              marginTop: "20%",
+            }}
+          >
+            <Autocomplete
+              options={["Open", "Closed"]}
+              getOptionLabel={(option) => option}
+              value={statusFilter}
+              onChange={(event, newValue) => setStatusFilter(newValue)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Status"
+                  variant="outlined"
+                  style={{ width: "120px" }}
+                />
               )}
-              {error && <p>{error}</p>}
-              {marketCount !== null &&
-                !loading &&
-                !error &&
-                (currentMarkets.length > 0 ? (
-                  currentMarkets.map((data, index) => (
-                    <FeatureBox
-                      key={index}
-                      delay={"0s"}
-                      title={data.name}
-                      description={data.description}
-                      ownerAddress={data.owner}
-                      marketID={data.id}
-                      onClick={handleFeatureBoxClick}
-                    />
-                  ))
-                ) : (
-                  <iframe
-                    title="NoMarketData"
-                    src="https://lottie.host/?file=650d2381-d113-4865-80a7-5f8f3217c5b7/dUlOdERsRD.json"
-                  ></iframe>
-                ))}
-            </div>
-            <div
-              style={{
-                textAlign: "center",
-                marginTop: "20px",
-                position: "absolute",
-                left: "50%",
-                transform: "translateX(-50%)",
-              }}
-            >
-              <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={handlePageChange}
-                color="primary"
-                shape="rounded"
-                showFirstButton
-                showLastButton
-              />
-            </div>
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="feature section">
+        <div className="container">
+          <div className="row">
+            {loading && (
+              <iframe
+                title="Loading"
+                src="https://lottie.host/embed/2bb1d9c7-c859-42c3-a978-47b8057e708f/u9sfk3p35s.json"
+                style={{ border: "none" }}
+              ></iframe>
+            )}
+            {error && <p>{error}</p>}
+            {marketCount !== null && !loading && !error && (
+              currentMarkets.length > 0 ? (
+                currentMarkets.map((data, index) => (
+                  <FeatureBox
+                    key={index}
+                    delay={"0s"}
+                    title={data.name}
+                    description={data.description}
+                    ownerAddress={data.owner}
+                    marketID={data.id}
+                    onClick={handleFeatureBoxClick}
+                  />
+                ))
+              ) : (
+                <iframe
+                  title="NoMarketData"
+                  src="https://lottie.host/embed/650d2381-d113-4865-80a7-5f8f3217c5b7/dUlOdERsRD.json"
+                  style={{ border: "none" }}
+                ></iframe>
+              )
+            )}
+          </div>
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "20px",
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+              shape="rounded"
+              showFirstButton
+              showLastButton
+            />
           </div>
         </div>
       </div>

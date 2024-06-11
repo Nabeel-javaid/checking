@@ -14,7 +14,6 @@ import { Alchemy, Network } from "alchemy-sdk";
 import { ListItemIcon } from '@mui/material';
 import COINS_LIST from '../../ABIs/store/uniswap.json';
 import { createClient } from '@supabase/supabase-js';
-
 import YOUR_CONTRACT_ABI from '../../ABIs/tellerv2.json';
 import { useParams } from 'react-router';
 

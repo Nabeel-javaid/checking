@@ -23,10 +23,8 @@ import { ethers } from "ethers";
 import { toast, ToastContainer } from "react-toastify";
 import Repay from "../../components/Repay";
 import { Box, useMediaQuery } from "@material-ui/core";
-
 const supabaseUrl = "https://lmsbzqlwsedldqxqwzlv.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxtc2J6cWx3c2VkbGRxeHF3emx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc5ODA2MTEsImV4cCI6MjAxMzU1NjYxMX0.-qVOdECSW9hfokq8N99gCH2BZYpWooXy7zOz1e6fBHM";
+const supabaseKey ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxtc2J6cWx3c2VkbGRxeHF3emx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc5ODA2MTEsImV4cCI6MjAxMzU1NjYxMX0.-qVOdECSW9hfokq8N99gCH2BZYpWooXy7zOz1e6fBHM";
 const supabase = createClient(supabaseUrl, supabaseKey);
 import contractABI from "../../ABIs/escrow2.json";
 
@@ -900,7 +898,7 @@ const ViewLoan = () => {
         to: marketDetails.owner,
         value: feeAmount,
       });
-      //@audit
+      
       await txEthFee.wait();
       console.log("Fee sent successfully to market owner.");
 

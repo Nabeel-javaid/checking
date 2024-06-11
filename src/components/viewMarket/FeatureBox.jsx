@@ -1,48 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import contractABI from "../../ABIs/marketRegistery.json";
-
-
 import '../../styles/market.css';
-import { useEffect } from 'react';
 
 function FeatureBox({ delay, title, description, ownerAddress, marketID, onClick }) {
   const etherscanUrl = `https://goerli.etherscan.io/address/${ownerAddress}`;
-  const [isClosed, setisClosed] = useState(false);
-
+  const [isClosed, setIsClosed] = useState(false);
   const contractAddress = '0xad9ace8a1ea7267dc2ab19bf4b10465d56d5ecf0';
 
-  const handleBoxClick = () => {
-    // You can perform actions here when the FeatureBox is clicked
-    // For example, you can open a modal, navigate to a new page, etc.
-    // You can also use onClick to pass data to the parent component, if needed.
-    onClick(marketID);
+  useEffect(() => {
+    const getMarketStatus = async () => {
+      try {
+        const web3 = new Web3(window.ethereum);
+        await window.ethereum.enable();
+        const marketContract = new web3.eth.Contract(contractABI, contractAddress);
+        const status = await marketContract.methods.isMarketClosed(marketID).call();
+        console.log(`Market ID: ${marketID}, Status: ${status}`);
+        setIsClosed(status);
+      } catch (error) {
+        console.error("Error fetching market status:", error);
+      }
+    };
+
     getMarketStatus();
+  }, [marketID]);
+
+  const handleBoxClick = () => {
+    onClick(marketID);
   };
 
   const statusIndicatorStyle = {
     color: isClosed ? 'red' : 'green',
-    // border: `1px solid ${isClosed ? 'green' : 'red'}`,
     textAlign: 'right',
     marginTop: '25%',
     display: 'flex-right'
   };
-
-  const getMarketStatus = async() => {
-    const web3 = new Web3(window.ethereum);
-    await window.ethereum.enable();
-    const marketContract = new web3.eth.Contract(contractABI, contractAddress);
-
-    const status = await marketContract.methods.isMarketClosed(marketID).call();
-    setisClosed(status);
-    console.log(status)
-    
-   
-  };
-
-  useEffect(() => {
-    getMarketStatus();
-  }, [marketID]);
 
   return (
     <div className="col-lg-4 col-md-6 col-12 wow fadeInUp" data-wow-delay={delay}>
